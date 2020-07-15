@@ -35,6 +35,7 @@
 #include "Unit5.h"
 #include "RS232implements.h"
 #include "Unit6.h"
+#include "Unit7.h"
 //---------------------------------------------------------------------------
 #define MAXIVAR		5
 #define MAXIOVAR	15
@@ -116,6 +117,9 @@ __published:	// IDE-managed Components
 	TAction *changepass;
 	TMenuItem *ChangePassword1;
 	TTimer *progtimeout;
+	TAction *Revision;
+	TMenuItem *LAD1;
+	TMenuItem *ChangeLADrevision1;
 	void __fastcall twClick(TObject *Sender);
 	void __fastcall StringGrid1DrawCell(TObject *Sender, int ACol, int ARow, TRect &Rect, TGridDrawState State);
 	void __fastcall StringGrid1Click(TObject *Sender);
@@ -153,6 +157,7 @@ __published:	// IDE-managed Components
 	void __fastcall programmExecute(TObject *Sender);
 	void __fastcall FormCanResize(TObject *Sender, int &NewWidth, int &NewHeight, bool &Resize);
 	void __fastcall progtimeoutTimer(TObject *Sender);
+	void __fastcall RevisionExecute(TObject *Sender);
 private:	// User declarations
 	TLadGraph * LadGraph;
 	bool TimersUsed[MAXTVAR];
@@ -197,6 +202,7 @@ public:		// User declarations
 	int count;
 	AnsiString LastMSG;
 	TForm6 * progr;
+	uint8_t ProgRevision;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

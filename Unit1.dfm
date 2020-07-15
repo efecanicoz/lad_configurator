@@ -40,7 +40,7 @@ object Form1: TForm1
     Top = 34
     Width = 978
     Height = 592
-    ActivePage = IO
+    ActivePage = LAD
     Align = alClient
     TabOrder = 0
     object IO: TTabSheet
@@ -100,7 +100,7 @@ object Form1: TForm1
           Caption = 'ActionToolBar3'
           ColorMap.HighlightColor = clBtnHighlight
           ColorMap.UnusedColor = clWhite
-          ColorMap.MenuColor = clMenu
+          ColorMap.SelectedColor = clHighlight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -141,6 +141,9 @@ object Form1: TForm1
             'Variable'
             'User Notes (if needed)')
           OnKeyPress = MVarsKeyPress
+          ColWidths = (
+            150
+            207)
         end
       end
       object GroupBox4: TGroupBox
@@ -164,6 +167,9 @@ object Form1: TForm1
             'Timer Name'
             'User Notes (if needed)')
           OnKeyPress = TimersKeyPress
+          ColWidths = (
+            150
+            143)
         end
       end
       object GroupBox5: TGroupBox
@@ -188,6 +194,9 @@ object Form1: TForm1
             'Output Name'
             'User Notes (if needed)')
           OnKeyPress = outputsKeyPress
+          ColWidths = (
+            150
+            140)
         end
       end
     end
@@ -204,7 +213,7 @@ object Form1: TForm1
         Caption = 'ActionToolBar2'
         ColorMap.HighlightColor = clBtnHighlight
         ColorMap.UnusedColor = clWhite
-        ColorMap.MenuColor = clMenu
+        ColorMap.SelectedColor = clHighlight
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -254,7 +263,12 @@ object Form1: TForm1
     Height = 19
     Panels = <
       item
+        Text = 'Port: N/A'
         Width = 150
+      end
+      item
+        Text = 'LAD siagramm revision:'
+        Width = 200
       end>
   end
   object ActionToolBar1: TActionToolBar
@@ -266,7 +280,7 @@ object Form1: TForm1
     Caption = 'ActionToolBar1'
     ColorMap.HighlightColor = clBtnHighlight
     ColorMap.UnusedColor = clWhite
-    ColorMap.MenuColor = clMenu
+    ColorMap.SelectedColor = clHighlight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -287,7 +301,7 @@ object Form1: TForm1
     Left = 176
     Top = 552
     Bitmap = {
-      494C010110005800FC0064003200FFFFFF001110FFFFFFFFFFFFFFFF424D3600
+      494C0101100058000C0164003200FFFFFF001110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000090010000FA0000000100100000000000400D
       0300000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -6996,6 +7010,12 @@ object Form1: TForm1
         Action = changepass
       end
     end
+    object LAD1: TMenuItem
+      Caption = 'LAD'
+      object ChangeLADrevision1: TMenuItem
+        Action = Revision
+      end
+    end
   end
   object EnableActList: TImageList
     Height = 24
@@ -7003,7 +7023,7 @@ object Form1: TForm1
     Left = 184
     Top = 472
     Bitmap = {
-      494C01011400A800100118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011400A800200118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000090000000010020000000000000D8
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -8798,7 +8818,7 @@ object Form1: TForm1
     Left = 264
     Top = 472
     Bitmap = {
-      494C010114003800400118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010114003800500118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000090000000010020000000000000D8
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -10908,6 +10928,12 @@ object Form1: TForm1
       Hint = 'Change Password'
       OnExecute = changepassExecute
     end
+    object Revision: TAction
+      Caption = 'Change LAD revision'
+      Enabled = False
+      Hint = 'The revision number is displayed by the status LED'
+      OnExecute = RevisionExecute
+    end
   end
   object SaveDialog1: TSaveDialog
     DefaultExt = 'scsl'
@@ -10927,7 +10953,7 @@ object Form1: TForm1
   end
   object progtimeout: TTimer
     Enabled = False
-    Interval = 5000
+    Interval = 80000
     OnTimer = progtimeoutTimer
     Left = 837
     Top = 56

@@ -17,9 +17,9 @@ TForm1 *Form1;
 __fastcall TForm1::TForm1(TComponent* Owner)
 	: TForm(Owner)
 {
+LadGraph = new TLadGraph(ImageList1);
 PosWrite=false;
 tw->FullExpand();
-LadGraph = new TLadGraph(ImageList1);
 Modified=false;
 InputsBox=NULL;
 EndFrame=NULL;
@@ -41,6 +41,7 @@ Unlocked=false;
 StartWindowName = Form1->Caption;
 BuildWindowAttributes("");
 progr = new TForm6(this);
+ProgRevision=1;
 }
 //---------------------------------------------------------------------------
 void  TForm1::GetFileVersion(LPCSTR filename,char * sVer, int slen)
@@ -73,9 +74,12 @@ void  TForm1::GetFileVersion(LPCSTR filename,char * sVer, int slen)
 //---------------------------------------------------------------------------
 void TForm1::BuildWindowAttributes(UnicodeString _postfix)
 {
+UnicodeString Revision = UnicodeString((int)ProgRevision);
+if(Revision.Length()<2) Revision="0"+Revision;
 char str[50];
 GetFileVersion(AnsiString(Application->ExeName).c_str(),str,50);
-Form1->Caption = StartWindowName + " v."+UnicodeString(str)+" "+_postfix;
+Form1->Caption = StartWindowName + " v."+UnicodeString(str)+_postfix;
+StatusBar1->Panels->operator [](1)->Text="LAD diagramm revision: "+Revision;
 }
 //---------------------------------------------------------------------------
 void TForm1::SetModified(bool Mod)
@@ -446,6 +450,7 @@ LastFilename="";
 OpenDialog1->FileName="";
 SaveDialog1->FileName="";
 SetModified(false);
+this->BuildWindowAttributes("");
 }
 //---------------------------------------------------------------------------
 void TForm1::PrepareContacts(TForm3 * frm)
@@ -856,6 +861,8 @@ size = s->Size;
 stream->Write(&size,sizeof(uint16_t));
 s->SaveToStream(stream);
 s->Clear();
+//записываем ревизию
+stream->Write(&ProgRevision,sizeof(uint8_t));
 //сохраняем основную программу
 AnsiString prg =AnsiString(LadGraph->CompileLADProgramm());
 size = prg.Length();
@@ -951,6 +958,8 @@ s->Seek(0,soFromBeginning);
 outputs->Strings->LoadFromStream(s);
 s->Clear();
 free(buf);
+//читаем ревизию
+stream->Read(&ProgRevision,sizeof(uint8_t));
 //читаем основную программу
 stream->Read(&len,sizeof(uint16_t));  //количество байтов в игриках
 buf = (char*)calloc(sizeof(char), len+1);
@@ -962,6 +971,7 @@ delete stream;
 LastFilename =  FileName;
 RefreshCiolsUsing();
 RefreshAllTimers();
+this->BuildWindowAttributes("");
 }
 //---------------------------------------------------------------------------
 unsigned long TForm1::getCRC(char *pchBuf, int nBufLen)
@@ -1092,6 +1102,7 @@ if(OpenDialog1->Execute(this->Handle))
 {
    OpenProject(OpenDialog1->FileName);
    SetModified(false);
+   this->BuildWindowAttributes("");
 }
 }
 //---------------------------------------------------------------------------
@@ -1212,7 +1223,8 @@ void __fastcall TForm1::ComboBox1KeyPress(TObject *Sender, System::WideChar &Key
 void __fastcall TForm1::programmExecute(TObject *Sender)
 {
 //формат
-//PUPCOUNT_Xs_PRGLEN_PRG_
+//REV_PUPCOUNT_Xs_PRGLEN_PRG_
+//REV_ - 8 бит - ревизия программы.
 //PUP - 16 бит. PullUpMask для входов.
 //COUNT - количество описанных иксов
 //_Xs_ - строка с описанием иксов в формате, _Xs_ может быть равен нулю! Тогда прогамма что-то делает, но на входы не реагирует.
@@ -1249,6 +1261,8 @@ TMemoryStream *s = new TMemoryStream;
 AnsiString t;
 int16_t size, temp;
 temp=0;
+//записываем ревизию.
+//prog->Write(&ProgRevision,1);
 //делаем PullUpMask
 //всего в маске 16 бит. Бит0 = вход 0;
 //Бит=0 -> нормельный режим, иначе включить PullUp
@@ -1365,10 +1379,20 @@ AnsiString TForm1::ConvertBufToHEXBuf(byte * buf, int len)
 //---------------------------------------------------------------------------
 void TForm1::OnPortRecv(AnsiString Answer)
 {
+int len;
+AnsiString temp;
 progtimeout->Enabled=false;
 if(Answer==OK_ANSWER)
 {
-	if(LastMSG==CLOSE_PROGRAMMING_MODE)
+	if(LastMSG==ENTER_PROGRAMMING_MODE)
+	{
+	temp=ConvertBufToHEXBuf(&ProgRevision,1);
+	LastMSG="!"+temp+"#";
+	len=LastMSG.Length();
+	len=ComPort->PortWrite(LastMSG);
+	return;
+    }
+	else if(LastMSG==CLOSE_PROGRAMMING_MODE)
 	{
 	   StopRecv=true;
 	   progr->Visible=false;
@@ -1385,6 +1409,7 @@ if(Answer==OK_ANSWER)
 else if(Answer==BUSY_ANSWER || Answer==REPEAT_ANSWER)
 {
   ComPort->PortWrite(LastMSG);
+  progtimeout->Enabled=true;
   return;
 }
 else //if(Answer==ERR_ANSWER)
@@ -1397,16 +1422,16 @@ else //if(Answer==ERR_ANSWER)
 	   return;
 }
 BYTE buf[MAX_PROG_BUF+1];
-int len = ProgStream->Read(buf, MAX_PROG_BUF);
+len = ProgStream->Read(buf, MAX_PROG_BUF);
 if(len==0)
 {
 //выводим из режима программирования
 LastMSG = CLOSE_PROGRAMMING_MODE;
 ComPort->PortWrite(LastMSG);
+progtimeout->Enabled=true;
 return;
 }
 progr->progress->Position=progr->progress->Position+len;
-AnsiString temp;
 buf[len]=0;
 temp=ConvertBufToHEXBuf(buf,len);
 LastMSG="$"+AnsiString().sprintf("%03d",count)+AnsiString().sprintf("%03d",temp.Length())+":"+temp+"#";
@@ -1500,6 +1525,23 @@ void __fastcall TForm1::progtimeoutTimer(TObject *Sender)
 	   MessageBox(this->Handle, AnsiString("PLC is not responding. Operation aborted.").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
 	   if(ProgStream!=NULL) delete ProgStream;
 	   ProgStream=NULL;
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::RevisionExecute(TObject *Sender)
+{
+TForm7 * form=new TForm7(this);
+form->rev->Value = ProgRevision;
+form->ShowModal();
+if(form->Result)
+{
+if(ProgRevision!=(uint8_t)form->rev->Value)
+	{
+	ProgRevision=(uint8_t)form->rev->Value;
+	this->SetModified(true);
+	this->BuildWindowAttributes("");
+	}
+}
+delete form;
 }
 //---------------------------------------------------------------------------
 

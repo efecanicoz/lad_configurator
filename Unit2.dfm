@@ -1,7 +1,7 @@
 object Frame2: TFrame2
   Left = 0
   Top = 0
-  Width = 552
+  Width = 500
   Height = 47
   TabOrder = 0
   object Variable: TLabel
@@ -32,15 +32,15 @@ object Frame2: TFrame2
     Caption = 'Input Value'
   end
   object Label3: TLabel
-    Left = 176
-    Top = 4
+    Left = 174
+    Top = 3
     Width = 45
     Height = 13
     Caption = 'Condition'
   end
   object Label4: TLabel
-    Left = 243
-    Top = 4
+    Left = 239
+    Top = 3
     Width = 26
     Height = 13
     Caption = 'Value'
@@ -63,7 +63,7 @@ object Frame2: TFrame2
       'I05')
   end
   object Condition: TComboBox
-    Left = 175
+    Left = 173
     Top = 17
     Width = 61
     Height = 21
@@ -77,9 +77,9 @@ object Frame2: TFrame2
       '=')
   end
   object rg: TRadioGroup
-    Left = 329
+    Left = 325
     Top = 3
-    Width = 159
+    Width = 156
     Height = 38
     Caption = 'The value is set as'
     Columns = 2
@@ -91,7 +91,7 @@ object Frame2: TFrame2
     OnClick = rgClick
   end
   object value: TCSpinEdit
-    Left = 242
+    Left = 238
     Top = 17
     Width = 81
     Height = 22

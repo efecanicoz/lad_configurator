@@ -99,8 +99,8 @@
         <ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\debug\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>8</VerInfo_Build>
+        <VerInfo_Build>1</VerInfo_Build>
+        <VerInfo_Release>2</VerInfo_Release>
         <BCC_OptimizeJumps>true</BCC_OptimizeJumps>
         <BCC_UseRegisterVariables>Always</BCC_UseRegisterVariables>
         <UsePackages>false</UsePackages>
@@ -115,8 +115,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <BCC_DataAlignment>Byte</BCC_DataAlignment>
         <_TCHARMapping>char</_TCHARMapping>
-        <VerInfo_Keys>CompanyName=SciSonic;FileDescription=SciSonic PLC LAD Configurator and Programmer;FileVersion=1.0.1.8;InternalName=LAD_Configurator;LegalCopyright=SciSonic;LegalTrademarks=SciSonic;OriginalFilename=LAD_Configurator.exe;ProductName=SciSonic LAD Configurator;ProductVersion=1.0.1.8;Comments=mailto: volodaisko@gmail.com</VerInfo_Keys>
-        <AppEnableHighDPI>true</AppEnableHighDPI>
+        <VerInfo_Keys>CompanyName=SciSonic;FileDescription=SciSonic PLC LAD Configurator and Programmer;FileVersion=1.0.2.1;InternalName=LAD_Configurator;LegalCopyright=SciSonic;LegalTrademarks=SciSonic;OriginalFilename=LAD_Configurator.exe;ProductName=SciSonic LAD Configurator;ProductVersion=1.0.2.1;Comments=mailto: volodaisko@gmail.com</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -179,11 +178,18 @@
             <DependentOn>Unit6.h</DependentOn>
             <BuildOrder>9</BuildOrder>
         </CppCompile>
-        <FormResources Include="Unit3.dfm"/>
-        <FormResources Include="Unit2.dfm"/>
+        <CppCompile Include="Unit7.cpp">
+            <Form>Form7</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>Unit7.h</DependentOn>
+            <BuildOrder>10</BuildOrder>
+        </CppCompile>
         <FormResources Include="Unit4.dfm"/>
-        <FormResources Include="Unit6.dfm"/>
+        <FormResources Include="Unit3.dfm"/>
         <FormResources Include="Unit5.dfm"/>
+        <FormResources Include="Unit7.dfm"/>
+        <FormResources Include="Unit6.dfm"/>
+        <FormResources Include="Unit2.dfm"/>
         <FormResources Include="Unit1.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -214,6 +220,8 @@
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcboffice2k230.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcbofficexp230.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k230.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp230.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </CPlusPlusBuilder.Personality>
             <Deployment Version="2">
@@ -269,27 +277,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
+                <DeployClass Name="ProjectiOSDeviceResourceRules">
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="iOSSimulator">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
                     </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
@@ -643,12 +636,27 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="ProjectiOSDeviceResourceRules">
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
                     </Platform>
                 </DeployClass>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>

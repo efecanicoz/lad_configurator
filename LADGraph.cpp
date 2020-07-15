@@ -371,6 +371,8 @@ void TLadGraph::CanGridsResize(TStringGrid *Grid)
 //---------------------------------------------------------------------------
 void TLadGraph::OnGridsResize()
 {
+	try
+	{
 	 if(nets==NULL) return;
 	 Nets * n = nets;
 	 while(1)
@@ -379,6 +381,11 @@ void TLadGraph::OnGridsResize()
 	 n=n->NextGrid;
 	 if(n==NULL) break;
 	 }
+	 }
+	 catch(...)
+	 {
+         return;
+     }
 }
 //---------------------------------------------------------------------------
 void TLadGraph::DeleteCol(TStringGrid *Grid, int Col)
