@@ -1,0 +1,39 @@
+object Form6: TForm6
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Programming'
+  ClientHeight = 59
+  ClientWidth = 418
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox1: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 418
+    Height = 59
+    Align = alClient
+    Caption = 'Programming...'
+    TabOrder = 0
+    ExplicitLeft = 80
+    ExplicitTop = 64
+    ExplicitWidth = 185
+    ExplicitHeight = 105
+    object progress: TProgressBar
+      Left = 13
+      Top = 24
+      Width = 388
+      Height = 17
+      TabOrder = 0
+    end
+  end
+end
