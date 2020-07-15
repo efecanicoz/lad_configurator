@@ -1,31 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899 12 30 00:00:00.000.070,D:\Frank.h\LAD_Configurator\Unit1.cpp=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.174,D:\Frank.h\LAD_Configurator\TRS232.cpp=</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.366,=D:\Frank.h\LAD_Configurator\Unit4.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.878,D:\Frank.h\LAD_Configurator\Unit6.cpp=D:\Frank.h\LAD_Configurator\RS232implements.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.401,=D:\Frank.h\LAD_Configurator\Unit6.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.511,=D:\Frank.h\LAD_Configurator\Unit7.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.070,D:\Frank.h\LAD_Configurator\Unit1.dfm=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.079,=D:\Frank.h\LAD_Configurator\LADGraph.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.896,D:\Frank.h\LAD_Configurator\Project1PCH1.h=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.432,R:\ArbaitenMachen\Frank.h\LAD_Configurator\Unit6.h=R:\ArbaitenMachen\Frank.h\LAD_Configurator\TRS232.h</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.878,D:\Frank.h\LAD_Configurator\Unit6.h=D:\Frank.h\LAD_Configurator\RS232implements.h</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.302,D:\Frank.h\LAD_Configurator\LAD_ConfiguratorPCH1.h=D:\Frank.h\LAD_Configurator\Project1PCH1.h</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.975,=D:\Frank.h\LAD_Configurator\Unit2.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.048,=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.044,=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.318,=D:\Frank.h\LAD_Configurator\Unit5.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.070,D:\Frank.h\LAD_Configurator\Unit1.h=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.h</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.132,=D:\Frank.h\LAD_Configurator\RS232Gate.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.084,D:\Frank.h\LAD_Configurator\RS232Gate.cpp=</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.331,D:\Frank.h\LAD_Configurator\LAD_Configurator.cbproj=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Project1.cbproj</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.009,=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.454,=D:\Frank.h\LAD_Configurator\Unit3.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.303,=D:\Frank.h\LAD_Configurator\Unit6.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.432,R:\ArbaitenMachen\Frank.h\LAD_Configurator\Unit6.cpp=R:\ArbaitenMachen\Frank.h\LAD_Configurator\TRS232.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.085,=R:\ArbaitenMachen\Frank.h\LAD_Configurator\Unit6.cpp</Transaction>
-    <Transaction>1899 12 30 00:00:00.000.013,=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.454,=D:\Frank.h\LAD_Configurator\Unit3.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.174,D:\Frank.h\LAD_Configurator\TRS232.cpp=</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.366,=D:\Frank.h\LAD_Configurator\Unit4.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.303,=D:\Frank.h\LAD_Configurator\Unit6.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.878,D:\Frank.h\LAD_Configurator\RS232implements.h=D:\Frank.h\LAD_Configurator\Unit6.h</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.878,D:\Frank.h\LAD_Configurator\RS232implements.cpp=D:\Frank.h\LAD_Configurator\Unit6.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.070,C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.dfm=D:\Frank.h\LAD_Configurator\Unit1.dfm</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.079,=D:\Frank.h\LAD_Configurator\LADGraph.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.975,=D:\Frank.h\LAD_Configurator\Unit2.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.331,C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Project1.cbproj=D:\Frank.h\LAD_Configurator\LAD_Configurator.cbproj</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.432,R:\ArbaitenMachen\Frank.h\LAD_Configurator\TRS232.cpp=R:\ArbaitenMachen\Frank.h\LAD_Configurator\Unit6.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.432,R:\ArbaitenMachen\Frank.h\LAD_Configurator\TRS232.h=R:\ArbaitenMachen\Frank.h\LAD_Configurator\Unit6.h</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.302,D:\Frank.h\LAD_Configurator\Project1PCH1.h=D:\Frank.h\LAD_Configurator\LAD_ConfiguratorPCH1.h</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.401,=D:\Frank.h\LAD_Configurator\Unit6.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.044,=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.318,=D:\Frank.h\LAD_Configurator\Unit5.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.132,=D:\Frank.h\LAD_Configurator\RS232Gate.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.084,D:\Frank.h\LAD_Configurator\RS232Gate.cpp=</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.070,C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.cpp=D:\Frank.h\LAD_Configurator\Unit1.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.048,=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.009,=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.013,=C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.511,=D:\Frank.h\LAD_Configurator\Unit7.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.070,C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Unit1.h=D:\Frank.h\LAD_Configurator\Unit1.h</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.085,=R:\ArbaitenMachen\Frank.h\LAD_Configurator\Unit6.cpp</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.896,C:\Users\volodai\Documents\Embarcadero\Studio\Projects\Project1PCH1.h=D:\Frank.h\LAD_Configurator\Project1PCH1.h</Transaction>
+    <Transaction>2020/07/15 17:48:22.344,=C:\Users\Efe\Documents\LAD_Configurator_Source_Code\Unit8.cpp</Transaction>
   </Transactions>
 </BorlandProject>
