@@ -3,6 +3,7 @@
 #include <vcl.h>
 #pragma hdrstop
 
+#include "Unit8.h"
 #include "Unit2.h"
 #include "Unit1.h"
 //---------------------------------------------------------------------------
@@ -160,4 +161,22 @@ else
 		rg->Enabled=true;
     }
 }
+
+
+
+void __fastcall TFrame2::Button1Click(TObject *Sender)
+{
+	TForm8 * form=new TForm8(this);
+	form->varName = this->Var;
+	form->ShowModal();
+	if(form->result)
+	{
+		//delete variable
+	}
+	else
+	{
+        //do nothing
+    }
+}
+//---------------------------------------------------------------------------
 

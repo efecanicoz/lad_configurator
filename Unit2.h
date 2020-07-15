@@ -9,6 +9,8 @@
 #include <Vcl.Forms.hpp>
 #include "cspin.h"
 #include <Vcl.ExtCtrls.hpp>
+#include <System.ImageList.hpp>
+#include <Vcl.ImgList.hpp>
 
 //---------------------------------------------------------------------------
 
@@ -25,11 +27,13 @@ __published:	// IDE-managed Components
 	TLabel *Label4;
 	TRadioGroup *rg;
 	TCSpinEdit *value;
+	TButton *Button1;
 	void __fastcall boxKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall rgClick(TObject *Sender);
 	void __fastcall InputSelect(TObject *Sender);
 	void __fastcall ConditionSelect(TObject *Sender);
 	void __fastcall valueChange(TObject *Sender);
+	void __fastcall Button1Click(TObject *Sender);
 private:	// User declarations
 	void BuildCondition();
 	bool Lock;

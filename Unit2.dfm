@@ -1,7 +1,7 @@
 object Frame2: TFrame2
   Left = 0
   Top = 0
-  Width = 500
+  Width = 607
   Height = 47
   TabOrder = 0
   object Variable: TLabel
@@ -98,5 +98,14 @@ object Frame2: TFrame2
     MaxValue = 100
     TabOrder = 3
     OnChange = valueChange
+  end
+  object Button1: TButton
+    Left = 487
+    Top = 3
+    Width = 75
+    Height = 38
+    Caption = 'Remove'
+    TabOrder = 4
+    OnClick = Button1Click
   end
 end
