@@ -46,6 +46,10 @@ object Form1: TForm1
     object IO: TTabSheet
       Caption = 'IO'
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 0
         Top = 0
@@ -98,11 +102,13 @@ object Form1: TForm1
           Height = 34
           ActionManager = Actions
           Caption = 'ActionToolBar3'
-          ColorMap.HighlightColor = clBtnHighlight
+          Color = clMenuBar
+          ColorMap.DisabledFontColor = 7171437
+          ColorMap.HighlightColor = clWhite
+          ColorMap.BtnSelectedFont = clBlack
           ColorMap.UnusedColor = clWhite
-          ColorMap.SelectedColor = clHighlight
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
@@ -211,11 +217,13 @@ object Form1: TForm1
         Height = 34
         ActionManager = Actions
         Caption = 'ActionToolBar2'
-        ColorMap.HighlightColor = clBtnHighlight
+        Color = clMenuBar
+        ColorMap.DisabledFontColor = 7171437
+        ColorMap.HighlightColor = clWhite
+        ColorMap.BtnSelectedFont = clBlack
         ColorMap.UnusedColor = clWhite
-        ColorMap.SelectedColor = clHighlight
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Tahoma'
         Font.Style = []
@@ -278,11 +286,13 @@ object Form1: TForm1
     Height = 34
     ActionManager = Actions
     Caption = 'ActionToolBar1'
-    ColorMap.HighlightColor = clBtnHighlight
+    Color = clMenuBar
+    ColorMap.DisabledFontColor = 7171437
+    ColorMap.HighlightColor = clWhite
+    ColorMap.BtnSelectedFont = clBlack
     ColorMap.UnusedColor = clWhite
-    ColorMap.SelectedColor = clHighlight
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clBlack
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
@@ -301,7 +311,7 @@ object Form1: TForm1
     Left = 176
     Top = 552
     Bitmap = {
-      494C0101100058000C0164003200FFFFFF001110FFFFFFFFFFFFFFFF424D3600
+      494C010110005800100064003200FFFFFF001110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000090010000FA0000000100100000000000400D
       0300000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -7023,7 +7033,7 @@ object Form1: TForm1
     Left = 184
     Top = 472
     Bitmap = {
-      494C01011400A800200118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011400A800040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000090000000010020000000000000D8
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -8818,7 +8828,7 @@ object Form1: TForm1
     Left = 264
     Top = 472
     Bitmap = {
-      494C010114003800500118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010114003800040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000090000000010020000000000000D8
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
