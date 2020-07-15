@@ -756,7 +756,7 @@ UnicodeString TLadGraph::SetCellParam(CellParam * Param)
   if(Param->Param==TOF || Param->Param==TON)
 	{
 		Res = Res+UnicodeString(DELIM)+Param->Value2;
-    }
+	}
   return Res;
 }
 //---------------------------------------------------------------------------

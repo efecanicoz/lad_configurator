@@ -356,30 +356,30 @@ InputsBox=NULL;
 //---------------------------------------------------------------------------
 void __fastcall TForm1::AddVariableExecute(TObject *Sender)
 {
-TFrame2 * frame;
-if(EndFrame==NULL && StartFrame==NULL)
-{
-frame = new TFrame2(this, NULL, ScrollBox2);
-StartFrame = frame;
-EndFrame = frame;
-}
-else
-{
-if(EndFrame->VarIndex>MAXIOVAR)
+	TFrame2 * frame;
+	if(EndFrame==NULL && StartFrame==NULL)
 	{
-		MessageBox(this->Handle, AnsiString("Sorry, but the maximum number of variables of this type has been reached.").c_str(),AnsiString("Warning").c_str(), MB_ICONWARNING);
-		return;
-    }
-frame = new TFrame2(this, EndFrame, ScrollBox2);
-EndFrame = frame;
-}
-frame->Input->Clear();
-for(int i=1; i<inputs->RowCount; i++)
-{
-frame->Input->Items->Add(inputs->Cells[0][i]);
-}
-frame->Input->ItemIndex=MAXCOIL;
-frame->SetLock(!Unlocked);
+		frame = new TFrame2(this, NULL, ScrollBox2);
+		StartFrame = frame;
+		EndFrame = frame;
+	}
+	else
+	{
+		if(EndFrame->VarIndex>MAXIOVAR)
+		{
+			MessageBox(this->Handle, AnsiString("Sorry, but the maximum number of variables of this type has been reached.").c_str(),AnsiString("Warning").c_str(), MB_ICONWARNING);
+			return;
+		}
+		frame = new TFrame2(this, EndFrame, ScrollBox2);
+		EndFrame = frame;
+	}
+	frame->Input->Clear();
+	for(int i=1; i<inputs->RowCount; i++)
+	{
+		frame->Input->Items->Add(inputs->Cells[0][i]);
+	}
+	frame->Input->ItemIndex=MAXCOIL;
+	frame->SetLock(!Unlocked);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::NewExecute(TObject *Sender)
