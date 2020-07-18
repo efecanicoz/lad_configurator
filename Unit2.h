@@ -35,10 +35,10 @@ __published:	// IDE-managed Components
 	void __fastcall valueChange(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
 private:	// User declarations
-	void BuildCondition();
 	bool Lock;
 public:		// User declarations
 	__fastcall TFrame2(TComponent* Owner, TFrame2 * Previous, TWinControl * Parrent_Control);
+	void BuildCondition();
 	TFrame2 * Prev;
 	TFrame2 * Next;
 	UnicodeString Condition_String;

@@ -650,58 +650,111 @@ if(Grid==this->CurrentGrid && ACol==Grid->Col && ARow==Grid->Row)
 	}
 
 }
+
+void TLadGraph::UpdateConditionNames(int deleted_index)
+{
+	CellParam param;
+	Nets *network;
+	TStringGrid *grid;
+	int count;
+	int i, j;
+	int num;
+
+	if(nets != NULL)
+	{
+		network = nets;
+		while(network != NULL)
+		{
+			grid = network->Grid;
+			if(grid != NULL)
+			{
+				for(i = 0; i < grid->RowCount; i++)
+				{
+					for(j = 0; j < grid->ColCount; j++)
+					{
+						param = GetCellParam(grid->Cells[j][i]);
+						if(param.Value.SubString(0,1) == "X")
+						{
+							 num = param.Value.SubString(2, param.Value.Length()).ToInt();
+							 if(num > deleted_index)
+							 {
+								 //reduce number by 1
+								 num--;
+								if(num<=9)
+									param.Value = "X0"+UnicodeString(num);
+								else
+									param.Value = "X"+UnicodeString(num);
+							 }
+							 else if(num == deleted_index)
+							 {
+								 //delete cell
+								 param.Param = LINE;
+								 param.Value = "";
+							 }         //else continue ekle
+							grid->Cells[j][i] = SetCellParam(&param);
+						}
+
+					}
+				}
+            }
+
+            network = network->NextGrid;
+		}
+    }
+}
+
 //---------------------------------------------------------------------------
 TStringGrid * TLadGraph::CreateNetwork(TWinControl* AOwner, TWinControl * Parrent)
 {
-if(nets==NULL)
+	if(nets==NULL)
 	{
-	nets = new Nets;
-	nets->PrevGrid = NULL;
-	nets->NextGrid = NULL;
-	nets->Grid = NULL;
-	nets->idx = 0;
-	CurrentGrid=NULL;
-	Networks=0;
-    }
-Nets * s = nets;
-Nets * b = s->PrevGrid;
- while(1)
- {
- if(s==NULL)
-	{
-	  s=new Nets;
-	  s->Grid = new TStringGrid(AOwner);
-	  s->Grid->Visible=false;
-	  s->idx = b->idx+1;
-	  s->PrevGrid = b;
-	  if(b!=NULL) b->NextGrid = s;
-	  s->NextGrid = NULL;
-	  break;
+		nets = new Nets;
+		nets->PrevGrid = NULL;
+		nets->NextGrid = NULL;
+		nets->Grid = NULL;
+		nets->idx = 0;
+		CurrentGrid=NULL;
+		Networks=0;
 	}
-	else if(s->Grid==NULL)
+	Nets * s = nets;
+	Nets * b = s->PrevGrid;
+	while(1)
 	{
-	  s->Grid = new TStringGrid(AOwner);
-	  s->Grid->Visible=false;
-	  s->idx = 1;
-	  s->PrevGrid = b;
-	  if(b!=NULL) b->NextGrid = s;
-	  s->NextGrid = NULL;
-	  break;
-	}
-	else
-	{
-		b = s;
-		s=s->NextGrid;
-	}
- }
- s->Grid->Parent = Parrent;
- SetGridParams(s);
- Networks++;
- s->Grid->Row=0;
- s->Grid->Col = 1;
- this->CurrentGrid = s->Grid;
- this->InvalidateGrids();
-return s->Grid;
+		if(s==NULL)
+		{
+			s=new Nets;
+			s->Grid = new TStringGrid(AOwner);
+			s->Grid->Visible=false;
+			s->idx = b->idx+1;
+			s->PrevGrid = b;
+			if(b!=NULL) b->NextGrid = s;
+			s->NextGrid = NULL;
+			break;
+		}
+		else if(s->Grid==NULL)
+		{
+			s->Grid = new TStringGrid(AOwner);
+			s->Grid->Visible=false;
+			s->idx = 1;
+			s->PrevGrid = b;
+			if(b!=NULL) b->NextGrid = s;
+			s->NextGrid = NULL;
+			break;
+		}
+		else
+		{
+			b = s;
+			s=s->NextGrid;
+		}
+	 }
+	 s->Grid->Parent = Parrent;
+	 SetGridParams(s);
+	 Networks++;
+	 s->Grid->Row=0;
+	 s->Grid->Col = 1;
+	 this->CurrentGrid = s->Grid;
+	 this->InvalidateGrids();
+	return s->Grid;
 }
 //---------------------------------------------------------------------------
 TLadGraph::TLadGraph(TImageList *list)

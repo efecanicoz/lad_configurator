@@ -15,30 +15,32 @@ TFrame2 *Frame2;
 __fastcall TFrame2::TFrame2(TComponent* Owner, TFrame2 * Previous, TWinControl * Parrent_Control)
 	: TFrame(Owner)
 {
-if(Previous!=NULL)
+	if(Previous!=NULL)
 	{
 		this->Top = Previous->Top+Previous->Height;
 		this->Left = Previous->Left;
 		this->Parent = Previous->Parent;
-		TFrame2 * prevframe;
-		//prevframe = Previous;
-		VarIndex = Previous->VarIndex+1;
+		this->Prev = Previous;
+		this->VarIndex = Previous->VarIndex+1;
 		Previous->Next = this;
 	}
-else
+	else
 	{
 		this->Top=0;
 		this->Left=0;
 		this->Parent = Parrent_Control;
-		VarIndex = 0;
+		this->Prev = NULL;
+		this->VarIndex = 0;
 	}
-this->Name = "Var"+UnicodeString(VarIndex);
-value->MinValue=0;
-value->MaxValue=100;
-value->Value=50;
-Lock=false;
-this->Align=alTop;
-BuildCondition();
+	this->Next = NULL;
+	this->Name = "Var"+UnicodeString(VarIndex);
+	value->MinValue=0;
+	value->MaxValue=100;
+	value->Value=50;
+	Lock=false;
+	this->Align=alTop;
+	BuildCondition();
+
 }
 //---------------------------------------------------------------------------
 void TFrame2::SetCondition(UnicodeString &Condition_Str)
@@ -166,17 +168,7 @@ else
 
 void __fastcall TFrame2::Button1Click(TObject *Sender)
 {
-	TForm8 * form=new TForm8(this);
-	form->varName = this->Var;
-	form->ShowModal();
-	if(form->result)
-	{
-		//delete variable
-	}
-	else
-	{
-        //do nothing
-    }
+	;
 }
 //---------------------------------------------------------------------------
 

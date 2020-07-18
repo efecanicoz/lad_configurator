@@ -11,25 +11,26 @@ TForm8 *Form8;
 //---------------------------------------------------------------------------
 __fastcall TForm8::TForm8(TComponent* Owner) : TForm(Owner)
 {
-    varName = "";
-    result = false;
+	selected_item = -1;
 }
-//---------------------------------------------------------------------------
 
-void __fastcall TForm8::BeforeActivate(TObject *Sender)
-{
-    this->Label1->Caption = this->Label1->Caption + this->varName;
-}
-//---------------------------------------------------------------------------
 void __fastcall TForm8::Button1Click(TObject *Sender)
 {
-	this->result = true;
+	UnicodeString str;
+	if(ComboBox1->Text.SubString(0,1) != "X")
+	{
+        return;
+    }
+
+	str = ComboBox1->Text.SubString(2, ComboBox1->Text.Length());
+
+	this->selected_item = str.ToInt();
 	Close();
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm8::Button2Click(TObject *Sender)
 {
-	this->result = false;
+	this->selected_item = -1;
     Close();
 }
 //---------------------------------------------------------------------------

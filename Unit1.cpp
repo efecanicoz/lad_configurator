@@ -8,6 +8,7 @@
 #pragma hdrstop
 
 #include "Unit1.h"
+#include "Unit8.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "CSPIN"
@@ -22,8 +23,6 @@ PosWrite=false;
 tw->FullExpand();
 Modified=false;
 InputsBox=NULL;
-EndFrame=NULL;
-StartFrame=NULL;
 MVars->DeleteRow(1);
 for(int i=0; i<MAXMVAR; i++)
 {
@@ -42,6 +41,7 @@ StartWindowName = Form1->Caption;
 BuildWindowAttributes("");
 progr = new TForm6(this);
 ProgRevision=1;
+frame2_count = 0;
 }
 //---------------------------------------------------------------------------
 void  TForm1::GetFileVersion(LPCSTR filename,char * sVer, int slen)
@@ -229,18 +229,18 @@ Form1->Close();
 //---------------------------------------------------------------------------
 void __fastcall TForm1::NewActExecute(TObject *Sender)
 {
-if(LadGraph->Networks>=MAXACTIONS)
+	if(LadGraph->Networks>=MAXACTIONS)
 	{
-MessageBox(this->Handle, AnsiString("Sorry, but the maximum number of Actions has been reached.").c_str(),AnsiString("Warning").c_str(), MB_ICONWARNING);
-return;
+		MessageBox(this->Handle, AnsiString("Sorry, but the maximum number of Actions has been reached.").c_str(),AnsiString("Warning").c_str(), MB_ICONWARNING);
+		return;
 	}
-TStringGrid * grid = LadGraph->CreateNetwork(this,ScrollBox1);
-grid->OnDrawCell = (TDrawCellEvent)&StringGrid1DrawCell;
-grid->OnClick = StringGrid1Click;
-grid->Visible=true;
-grid->Invalidate();
-Application->ProcessMessages();
-SetModified(true);
+	TStringGrid * grid = LadGraph->CreateNetwork(this,ScrollBox1);
+	grid->OnDrawCell = (TDrawCellEvent)&StringGrid1DrawCell;
+	grid->OnClick = StringGrid1Click;
+	grid->Visible=true;
+	grid->Invalidate();
+	Application->ProcessMessages();
+	SetModified(true);
 }
 //---------------------------------------------------------------------------
 void TForm1::RefreshTimersInGrid(TStringGrid * grid)
@@ -357,21 +357,22 @@ InputsBox=NULL;
 void __fastcall TForm1::AddVariableExecute(TObject *Sender)
 {
 	TFrame2 * frame;
-	if(EndFrame==NULL && StartFrame==NULL)
+	if(frame2_count == 0)
 	{
 		frame = new TFrame2(this, NULL, ScrollBox2);
-		StartFrame = frame;
-		EndFrame = frame;
+		frame2_array[0] = frame;
+		frame2_count = 1;
 	}
 	else
 	{
-		if(EndFrame->VarIndex>MAXIOVAR)
+		if(frame2_count >= MAXIOVAR)
 		{
 			MessageBox(this->Handle, AnsiString("Sorry, but the maximum number of variables of this type has been reached.").c_str(),AnsiString("Warning").c_str(), MB_ICONWARNING);
 			return;
 		}
-		frame = new TFrame2(this, EndFrame, ScrollBox2);
-		EndFrame = frame;
+		frame = new TFrame2(this, frame2_array[frame2_count-1], ScrollBox2);
+		frame2_array[frame2_count] = frame;
+        frame2_count++;
 	}
 	frame->Input->Clear();
 	for(int i=1; i<inputs->RowCount; i++)
@@ -384,23 +385,17 @@ void __fastcall TForm1::AddVariableExecute(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TForm1::NewExecute(TObject *Sender)
 {
-TestModified();
-if(StartFrame!=NULL)
-{
-TFrame2 * frame = StartFrame;
-TFrame2 * nframe = StartFrame->Next;
-	while (1)
+	int i;
+	TestModified();
+	if(frame2_count != 0)
+	{
+		for(i = 0; i < frame2_count; i++)
 		{
-		  delete frame;
-		  frame=nframe;
-		  if(nframe!=NULL)
-		  nframe = frame->Next;
-		  if(frame==NULL) break;
+			delete frame2_array[i];
 		}
-}
-StartFrame=NULL;
-EndFrame=NULL;
-inputs->Strings->Clear();
+		frame2_count = 0;
+	}
+	inputs->Strings->Clear();
 for(int i=0; i<MAXCOIL; i++)
 {
  if(i<=9) inputs->InsertRow("F0"+UnicodeString(i),"Y0"+UnicodeString(i)+" Load Feedback (0...100%)",true);
@@ -455,27 +450,24 @@ this->BuildWindowAttributes("");
 //---------------------------------------------------------------------------
 void TForm1::PrepareContacts(TForm3 * frm)
 {
-frm->Var->Items->Clear();
-frm->Var->Text="";
-frm->Result=false;
-TFrame2 * frame = StartFrame;
-	while (1)
-		{
-		   if(frame!=NULL)
-		   {
-		   frm->Var->AddItem(frame->Var, NULL);
-		   frame->SetLock(!Unlocked);
-		   frame=frame->Next;
-		   }
-		   else break;
-		}
-for(int i=1; i<MVars->RowCount; i++)
-{
-frm->Var->AddItem(MVars->Cells[0][i] , NULL);
-}
-if(frm->Var->Items->Count>0)
-frm->Var->ItemIndex=0;
-frm->PrepareToContact();
+	int i;
+	frm->Var->Items->Clear();
+	frm->Var->Text="";
+	frm->Result=false;
+
+	for(i = 0; i < frame2_count; i++)
+	{
+		frm->Var->AddItem(frame2_array[i]->Var, NULL);
+		frame2_array[i]->SetLock(!Unlocked);
+	}
+
+	for(int i=1; i<MVars->RowCount; i++)
+	{
+		frm->Var->AddItem(MVars->Cells[0][i] , NULL);
+	}
+	if(frm->Var->Items->Count>0)
+		frm->Var->ItemIndex=0;
+	frm->PrepareToContact();
 }
 //---------------------------------------------------------------------------
 bool TForm1::PrepareTimers(TForm3 * frm)
@@ -500,16 +492,17 @@ return flg;
 //---------------------------------------------------------------------------
 void __fastcall TForm1::AddNOExecute(TObject *Sender)
 {
-if(LadGraph->GetCurrentGrid()==NULL) return;
-TForm3 * frm = new TForm3(this);
-PrepareContacts(frm);
-frm->ShowModal();
-if(frm->Result)
+	if(LadGraph->GetCurrentGrid()==NULL)
+		return;
+	TForm3 * frm = new TForm3(this);
+	PrepareContacts(frm);
+	frm->ShowModal();
+	if(frm->Result)
 	{
 		LadGraph->Add_NO(LadGraph->GetCurrentGrid(),frm->Var->Text);
 		SetModified(true);
 	}
-delete frm;
+	delete frm;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::AddNCExecute(TObject *Sender)
@@ -799,85 +792,77 @@ else return;
 
 void TForm1::SaveProject(UnicodeString FileName)
 {
-if(!Unlocked) return;
-TFileStream * stream = new TFileStream(FileName,fmOpenReadWrite|fmOpenWrite|fmCreate);
-if(stream==NULL)
+	int i;
+	if(!Unlocked)
+		return;
+	TFileStream * stream = new TFileStream(FileName,fmOpenReadWrite|fmOpenWrite|fmCreate);
+	if(stream==NULL)
 	{
-	 MessageBox(this->Handle, AnsiString("Something went wrong...\r\nFile not opened").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
-	 return;
-    }
-TMemoryStream *s = new TMemoryStream;
-inputs->Strings->SaveToStream(s);
-uint16_t size = s->Size;
-stream->Write(&size,sizeof(uint16_t));
-s->SaveToStream(stream);
-s->Clear();
-uint16_t frames=0;
-//сохраняем иксы
-if(StartFrame!=NULL)
+		MessageBox(this->Handle, AnsiString("Something went wrong...\r\nFile not opened").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
+		return;
+	}
+	TMemoryStream *s = new TMemoryStream;
+	inputs->Strings->SaveToStream(s);
+	uint16_t size = s->Size;
+	stream->Write(&size,sizeof(uint16_t));
+	s->SaveToStream(stream);
+	s->Clear();
+	uint16_t frames=0;
+	//сохраняем иксы
+	for(i = 0; i < frame2_count; i++)
 	{
-	TFrame2 * frame = StartFrame;
-	while(1)
-		{
-			if(frame==NULL) break;
-			else
-			{
-			 frames++;
-			 uint16_t len=0;
-			 AnsiString t = AnsiString(frame->Condition_String);
-			 len=t.Length();
-			 s->Write(&len,sizeof(uint16_t));
-			 s->Write(t.c_str(), len);
-			 frame=frame->Next;
-			}
-		}
-		if(frames>0)
-		{
-		 stream->Write(&frames,sizeof(uint16_t));
-		 s->SaveToStream(stream);
-		 s->Clear();
-        }
+		uint16_t len=0;
+		AnsiString t = AnsiString(frame2_array[i]->Condition_String);
+		len=t.Length();
+		s->Write(&len,sizeof(uint16_t));
+		s->Write(t.c_str(), len);
+	}
+	if(frame2_count != 0)
+	{
+		stream->Write(&frames,sizeof(uint16_t));
+		s->SaveToStream(stream);
+		s->Clear();
 	}
 	else
 	{
 	size=0;
 	stream->Write(&size,sizeof(uint16_t));
 	}
-//сохраняем Мки
-MVars->Strings->SaveToStream(s);
-size = s->Size;
-stream->Write(&size,sizeof(uint16_t));
-s->SaveToStream(stream);
-s->Clear();
-//сохраняем Таймеры
-Timers->Strings->SaveToStream(s);
-size = s->Size;
-stream->Write(&size,sizeof(uint16_t));
-s->SaveToStream(stream);
-s->Clear();
-//сохраняем игрики
-outputs->Strings->SaveToStream(s);
-size = s->Size;
-stream->Write(&size,sizeof(uint16_t));
-s->SaveToStream(stream);
-s->Clear();
-//записываем ревизию
-stream->Write(&ProgRevision,sizeof(uint8_t));
-//сохраняем основную программу
-AnsiString prg =AnsiString(LadGraph->CompileLADProgramm());
-size = prg.Length();
-stream->Write(&size,sizeof(uint16_t));
-stream->Write(prg.c_str(),prg.Length());
-delete s;
-stream->Seek(0,soFromBeginning);
-char * buf = (char*)calloc(sizeof(char), stream->Size+1);
-stream->Read(buf,stream->Size);
-unsigned long CRC = getCRC(buf,stream->Size);
-stream->Seek(0,soFromEnd);
-stream->Write(&CRC, sizeof(unsigned long));
-free(buf);
-delete stream;
-SetModified(false);
+	//сохраняем Мки
+	MVars->Strings->SaveToStream(s);
+	size = s->Size;
+	stream->Write(&size,sizeof(uint16_t));
+	s->SaveToStream(stream);
+	s->Clear();
+	//сохраняем Таймеры
+	Timers->Strings->SaveToStream(s);
+	size = s->Size;
+	stream->Write(&size,sizeof(uint16_t));
+	s->SaveToStream(stream);
+	s->Clear();
+	//сохраняем игрики
+	outputs->Strings->SaveToStream(s);
+	size = s->Size;
+	stream->Write(&size,sizeof(uint16_t));
+	s->SaveToStream(stream);
+	s->Clear();
+	//записываем ревизию
+	stream->Write(&ProgRevision,sizeof(uint8_t));
+	//сохраняем основную программу
+	AnsiString prg =AnsiString(LadGraph->CompileLADProgramm());
+	size = prg.Length();
+	stream->Write(&size,sizeof(uint16_t));
+	stream->Write(prg.c_str(),prg.Length());
+	delete s;
+	stream->Seek(0,soFromBeginning);
+	char * buf = (char*)calloc(sizeof(char), stream->Size+1);
+	stream->Read(buf,stream->Size);
+	unsigned long CRC = getCRC(buf,stream->Size);
+	stream->Seek(0,soFromEnd);
+	stream->Write(&CRC, sizeof(unsigned long));
+	free(buf);
+	delete stream;
+	SetModified(false);
 }
 //---------------------------------------------------------------------------
 void TForm1::OpenProject(UnicodeString FileName)
@@ -922,12 +907,12 @@ if(count!=0)
 	buf = (char*)calloc(sizeof(char), 256);
 	for(int i=0; i<count; i++)
 	{
-	  stream->Read(&len,sizeof(uint16_t));  //количество байтов в иксе
-	  stream->Read(buf,len);
-	  buf[len]=0;
-	  AddVariableExecute(this);
-	  UnicodeString str =  UnicodeString(buf);
-	  EndFrame->SetCondition(str);
+		stream->Read(&len,sizeof(uint16_t));  //количество байтов в иксе
+		stream->Read(buf,len);
+		buf[len]=0;
+		AddVariableExecute(this);
+		UnicodeString str =  UnicodeString(buf);
+		frame2_array[frame2_count-1]->SetCondition(str);
 	}
 	free(buf);
 }
@@ -1123,28 +1108,25 @@ StopRecv=true;
 //---------------------------------------------------------------------------
 void __fastcall TForm1::UnlockExecute(TObject *Sender)
 {
-if(!GetPrivileges())
-{
-MessageBox(this->Handle, AnsiString("Invalid password. Try again.").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
-return;
-}
-for(int i=0; i<Actions->ActionCount; i++)
-{
-if(Actions->Actions[i]->Name!="Unlock")
-Actions->Actions[i]->Enabled=true;
-else Actions->Actions[i]->Enabled=false;
-}
-Unlocked=true;
-if(StartFrame!=NULL)
-{
-	TFrame2 * frame = StartFrame;
-	while(1)
+	int i;
+	if(!GetPrivileges())
 	{
-		if(frame==NULL) break;
-		else  frame->SetLock(!Unlocked);
-		frame=frame->Next;
+		MessageBox(this->Handle, AnsiString("Invalid password. Try again.").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
+		return;
 	}
-}
+	for(int i=0; i<Actions->ActionCount; i++)
+	{
+		if(Actions->Actions[i]->Name != "Unlock")
+			Actions->Actions[i]->Enabled=true;
+		else
+			Actions->Actions[i]->Enabled=false;
+	}
+	Unlocked=true;
+
+	for(i = 0; i < frame2_count; i++)
+	{
+		frame2_array[i]->SetLock(!Unlocked);
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -1249,76 +1231,67 @@ void __fastcall TForm1::programmExecute(TObject *Sender)
 //#define MAXTVAR		10
 //#define MAXCOIL		2
 //#define MAXACTIONS	20
-UnicodeString ladprg = LadGraph->CompileLADProgramm();
-if(ladprg=="")
+	int i;
+	AnsiString t;
+	int16_t size, temp;
+	UnicodeString ladprg = LadGraph->CompileLADProgramm();
+	if(ladprg=="")
 	{
-	 Tabs->ActivePageIndex=2;
-	 MessageBox(this->Handle, AnsiString("Something went wrong...\r\nOperation not completed").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
-	 return;
+		Tabs->ActivePageIndex=2;
+		MessageBox(this->Handle, AnsiString("Something went wrong...\r\nOperation not completed").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
+		return;
 	}
-TMemoryStream *prog = new TMemoryStream;
-TMemoryStream *s = new TMemoryStream;
-AnsiString t;
-int16_t size, temp;
-temp=0;
-//записываем ревизию.
-//prog->Write(&ProgRevision,1);
-//делаем PullUpMask
-//всего в маске 16 бит. Бит0 = вход 0;
-//Бит=0 -> нормельный режим, иначе включить PullUp
-for(int i=0; i<inputs->RowCount-1; i++)
-{
-	if(inputs->Cells[1][i+1]!="Normal")
-		{
-		  temp=temp| (uint16_t)(1<<i);
-		}
-}
-prog->Write(&temp,sizeof(uint16_t));
-//записываем иксы
-temp=0;  //в нем будет количество иксов
-if(StartFrame!=NULL)
-{
-TFrame2 * frame = StartFrame;
-s->Clear();
-	while(1)
+	TMemoryStream *prog = new TMemoryStream;
+	TMemoryStream *s = new TMemoryStream;
+	temp=0;
+	//записываем ревизию.
+	//prog->Write(&ProgRevision,1);
+	//делаем PullUpMask
+	//всего в маске 16 бит. Бит0 = вход 0;
+	//Бит=0 -> нормельный режим, иначе включить PullUp
+	for(int i=0; i<inputs->RowCount-1; i++)
 	{
-	 if(frame==NULL) break;
-	 else
-		{
-			temp++;   //найден икс
-			t = AnsiString(frame->Condition_String);
-			size = t.Length();
-			s->Write(&size,sizeof(uint16_t));
-			s->Write(t.c_str(), size);
-			frame=frame->Next;
-		}
+		if(inputs->Cells[1][i+1]!="Normal")
+			{
+			  temp=temp| (uint16_t)(1<<i);
+			}
 	}
-	if(temp>0)
-		{
-		 prog->Write(&temp,sizeof(uint16_t));
-		 s->SaveToStream(prog);
-		 s->Clear();
-		}
-}
-else
-{
-prog->Write(&temp,sizeof(uint16_t));
-}
-t=AnsiString(ladprg);
-size = t.Length();
-prog->Write(&size,sizeof(uint16_t));
-prog->Write(t.c_str(),size);
-delete s;
-TIniFile * ini = new TIniFile(ExtractFileDir(Application->ExeName)+"\\config.ini");
-if(ini->ReadInteger("options","SaveCompilled",0)>0)
-	try
+	prog->Write(&temp,sizeof(uint16_t));
+	//записываем иксы
+	temp=0;  //в нем будет количество иксов
+	for(i = 0; i < frame2_count; i++)
 	{
-	prog->SaveToFile(ExtractFileDir(Application->ExeName)+"\\Compilled.prg");
+		t = AnsiString(frame2_array[i]->Condition_String);
+		size = t.Length();
+		s->Write(&size,sizeof(uint16_t));
+		s->Write(t.c_str(), size);
 	}
-	catch(...) {}
-delete ini;
-prog->Seek(0,soFromBeginning);
-SendToPLC(prog);
+	if(frame2_count > 0)
+	{
+		prog->Write(&frame2_count,sizeof(uint16_t));
+		s->SaveToStream(prog);
+		s->Clear();
+	}
+	else
+	{
+		prog->Write(&temp,sizeof(uint16_t));
+	}
+
+	t=AnsiString(ladprg);
+	size = t.Length();
+	prog->Write(&size,sizeof(uint16_t));
+	prog->Write(t.c_str(),size);
+	delete s;
+	TIniFile * ini = new TIniFile(ExtractFileDir(Application->ExeName)+"\\config.ini");
+	if(ini->ReadInteger("options","SaveCompilled",0)>0)
+		try
+		{
+		prog->SaveToFile(ExtractFileDir(Application->ExeName)+"\\Compilled.prg");
+		}
+		catch(...) {}
+	delete ini;
+	prog->Seek(0,soFromBeginning);
+	SendToPLC(prog);
 }
 //---------------------------------------------------------------------------
 DWORD WINAPI RecvStream(LPVOID c)
@@ -1542,6 +1515,75 @@ if(ProgRevision!=(uint8_t)form->rev->Value)
 	}
 }
 delete form;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::DeleteVariableExecute(TObject *Sender)
+{
+	UnicodeString temp_name, curr_name, prev_var, var;
+	TFrame2 *frame_to_del;
+	int top, left, prev_top, prev_left;
+	int index_to_del;
+	int i;
+	if(this->frame2_count == 0)
+	{
+		return;
+	}
+
+	TForm8 * form = new TForm8(this);
+	for(i = 0; i < this->frame2_count; i++)
+	{
+		form->ComboBox1->AddItem(frame2_array[i]->Var, NULL);
+	}
+	form->ShowModal();
+	index_to_del = form->selected_item;
+
+	if(index_to_del == -1)
+	{
+        return;
+    }
+
+	frame_to_del = this->frame2_array[index_to_del];
+
+	for(i = index_to_del; i < (frame2_count-1); i++)
+	{
+		frame2_array[i] = frame2_array[i+1];
+	}
+	frame2_array[i] = NULL;
+
+	temp_name = frame_to_del->Name;
+	frame_to_del->Name = "";
+	prev_top = frame_to_del->Top;
+	prev_left = frame_to_del->Left;
+	prev_var = frame_to_del->Var;
+
+
+	for(i = index_to_del ; i < (frame2_count -1); i++)
+	{
+		top = frame2_array[i]->Top;
+		left = frame2_array[i]->Left;
+		var = frame2_array[i]->Var;
+		curr_name = frame2_array[i]->Name;
+
+		frame2_array[i]->Top = prev_top;
+		frame2_array[i]->Left = prev_left;
+		frame2_array[i]->Var = prev_var;
+		frame2_array[i]->Name = temp_name;
+        frame2_array[i]->VarIndex = i;
+		frame2_array[i]->BuildCondition();
+
+		temp_name = curr_name;
+		prev_top = top;
+		prev_left = left;
+        prev_var = var;
+	}
+
+	delete frame_to_del;
+	frame2_count--;
+
+    LadGraph->UpdateConditionNames(index_to_del);
+
+	return;
 }
 //---------------------------------------------------------------------------
 

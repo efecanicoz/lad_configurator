@@ -120,6 +120,7 @@ __published:	// IDE-managed Components
 	TAction *Revision;
 	TMenuItem *LAD1;
 	TMenuItem *ChangeLADrevision1;
+	TAction *Action1;
 	void __fastcall twClick(TObject *Sender);
 	void __fastcall StringGrid1DrawCell(TObject *Sender, int ACol, int ARow, TRect &Rect, TGridDrawState State);
 	void __fastcall StringGrid1Click(TObject *Sender);
@@ -158,6 +159,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormCanResize(TObject *Sender, int &NewWidth, int &NewHeight, bool &Resize);
 	void __fastcall progtimeoutTimer(TObject *Sender);
 	void __fastcall RevisionExecute(TObject *Sender);
+	void __fastcall DeleteVariableExecute(TObject *Sender);
 private:	// User declarations
 	TLadGraph * LadGraph;
 	bool TimersUsed[MAXTVAR];
@@ -168,12 +170,12 @@ private:	// User declarations
 	void  GetFileVersion(LPCSTR filename,char * sVer, int slen);
 	void SetModified(bool Mod);
 	bool PosWrite;
+	TFrame2 * frame2_array[MAXIOVAR];
+    int frame2_count;
 public:		// User declarations
 	__fastcall TForm1(TComponent* Owner);
 	bool Modified;
 	TComboBox *InputsBox;
-	TFrame2 * StartFrame;
-	TFrame2 * EndFrame;
 	void PrepareContacts(TForm3 * frm);
 	bool PrepareTimers(TForm3 * frm);
 	bool TestDown();

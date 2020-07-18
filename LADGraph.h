@@ -141,6 +141,7 @@ public:
 	bool CurrentCellIsFBD();
 	bool CoilTypeIsDirect(Nets *net, UnicodeString &CoilName);
 	bool CellIsTimer(TStringGrid *Grid, int Arow, int Acol, int &TimerIndex);
+    void TLadGraph::UpdateConditionNames(int upper_limit);
 };
 
 

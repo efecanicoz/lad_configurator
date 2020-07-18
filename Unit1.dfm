@@ -10775,6 +10775,10 @@ object Form1: TForm1
             Action = AddVariable
             Caption = '&AddVariable'
             ImageIndex = 15
+          end
+          item
+            Action = Action1
+            Caption = '&DeleteVariable'
           end>
         ActionBar = ActionToolBar3
       end>
@@ -10943,6 +10947,11 @@ object Form1: TForm1
       Enabled = False
       Hint = 'The revision number is displayed by the status LED'
       OnExecute = RevisionExecute
+    end
+    object Action1: TAction
+      Caption = 'DeleteVariable'
+      Enabled = False
+      OnExecute = DeleteVariableExecute
     end
   end
   object SaveDialog1: TSaveDialog
