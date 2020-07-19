@@ -27,7 +27,6 @@ __published:	// IDE-managed Components
 	TLabel *Label4;
 	TRadioGroup *rg;
 	TCSpinEdit *value;
-	TButton *Button1;
 	void __fastcall boxKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall rgClick(TObject *Sender);
 	void __fastcall InputSelect(TObject *Sender);

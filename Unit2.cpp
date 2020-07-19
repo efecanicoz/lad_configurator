@@ -72,33 +72,39 @@ void TFrame2::BuildCondition()
 {
 	if(Input->Text.Pos("F"))
 	{
-		rg->ItemIndex=0;
+		//rg->ItemIndex=0;
 		rg->DragMode=dmAutomatic;
-		rg->Items[0].Text="%";
+		rg->Items[0].Text="% \rmilliAmperes";
 	}
 	else
 	{
 		rg->DragMode=dmManual;
 		rg->Items[0].Text="% of VCC\rmilliVolts";
 	}
+
 	if(rg->ItemIndex==0)
 	{
-		if(value->Value>100)
-			value->Value=50;
+		if(value->Value > 100)
+			value->Value=100;
 		value->MinValue=0;
 		value->MaxValue=100;
 	}
 	else
 	{
-/*		if(value->Value>32000)
-			value->Value=32000;
-		if(value->Value<8000)
-			value->Value=8000;*/
-		value->MinValue=8000;
-		value->MaxValue=32000;
+		if(Input->Text.Pos("F"))
+		{
+			value->MinValue=1;
+			value->MaxValue=100000;
+		}
+		else
+		{
+			value->MinValue=8000;
+			value->MaxValue=32000;
+		}
 	}
 	if(Lock)
 		return;
+
 	if(VarIndex<=9)
 		Var = "X0"+UnicodeString(VarIndex);
 	else
@@ -121,21 +127,22 @@ Key=NULL;
 //---------------------------------------------------------------------------
 void __fastcall TFrame2::rgClick(TObject *Sender)
 {
-	if(rg->ItemIndex==0)
+	/*if(rg->ItemIndex==0)
 	{
-		if(value->Value>100) value->Value=50;
+		if(value->Value>100)
+			value->Value=50;
 		value->MinValue=0;
 		value->MaxValue=100;
 	}
 	else
 	{
-/*		if(value->Value>32000)
+		if(value->Value>32000)
 			value->Value=32000;
 		if(value->Value<8000)
-			value->Value=8000; */
+			value->Value=8000;
 		value->MinValue=8000;
 		value->MaxValue=32000;
-	}
+	}*/
 	Form1->Modified=true;
 	BuildCondition();
 }

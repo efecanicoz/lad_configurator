@@ -79,7 +79,7 @@ object Frame2: TFrame2
   object rg: TRadioGroup
     Left = 325
     Top = 3
-    Width = 156
+    Width = 188
     Height = 38
     Caption = 'The value is set as'
     Columns = 2
@@ -98,14 +98,5 @@ object Frame2: TFrame2
     MaxValue = 100
     TabOrder = 3
     OnChange = valueChange
-  end
-  object Button1: TButton
-    Left = 487
-    Top = 3
-    Width = 75
-    Height = 38
-    Caption = 'Remove'
-    TabOrder = 4
-    OnClick = Button1Click
   end
 end
