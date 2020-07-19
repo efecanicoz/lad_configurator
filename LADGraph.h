@@ -24,6 +24,8 @@
 #define MOV				"B"
 #define TF				"C"
 #define TN				"T"
+#define TmF             "c"
+#define TmN             "t"
 //---------------------------------------------------------------------------
 #define COIL			"0"
 #define LINE			"1"

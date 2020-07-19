@@ -1074,11 +1074,11 @@ UnicodeString TLadGraph::CompileCell(CellParam param)
 		}
 	if(param.Param==TOF)
 		{
-		  return UnicodeString(TF)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
+		  return UnicodeString(TmF)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
 		}
 	if(param.Param==TON)
 		{
-		  return UnicodeString(TN)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
+		  return UnicodeString(TmN)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
 		}
 return "";
 }
@@ -1242,27 +1242,35 @@ CellParam TLadGraph::DeCompileCell(UnicodeString &s)
    s=s.SubString(5,s.Length());
    return Data;
   }
-  else if(UnicodeString(s.operator [](1))==UnicodeString(TF))
+  else if(UnicodeString(s.operator [](1))==UnicodeString(TF) || UnicodeString(s.operator [](1))==UnicodeString(TmF))
   {
    Data.Param=TOF;
    int pos = s.Pos(UnicodeString(DELIM));
    Data.Value=s.SubString(2,pos-2);
    s=s.SubString(pos+1,s.Length());
    pos = s.Pos(UnicodeString(DELIM));
-   Data.Value2=s.SubString(1,pos-1);
+   Data.Value2 = s.SubString(1,pos-1);
+   if(UnicodeString(s.operator [](1))==UnicodeString(TF)) //convert to msec
+   {
+		Data.Value2 = Data.Value2 + "000";
+   }
    s=s.SubString(pos+1,s.Length());
    return Data;
   }
-  else if(UnicodeString(s.operator [](1))==UnicodeString(TN))
+  else if(UnicodeString(s.operator [](1))==UnicodeString(TN) || UnicodeString(s.operator [](1))==UnicodeString(TmN))
   {
-   Data.Param=TON;
-   int pos = s.Pos(UnicodeString(DELIM));
-   Data.Value=s.SubString(2,pos-2);
-   s=s.SubString(pos+1,s.Length());
-   pos = s.Pos(UnicodeString(DELIM));
-   Data.Value2=s.SubString(1,pos-1);
-   s=s.SubString(pos+1,s.Length());
-   return Data;
+	Data.Param=TON;
+	int pos = s.Pos(UnicodeString(DELIM));
+	Data.Value=s.SubString(2,pos-2);
+	s=s.SubString(pos+1,s.Length());
+	pos = s.Pos(UnicodeString(DELIM));
+	Data.Value2=s.SubString(1,pos-1);
+	if(UnicodeString(s.operator [](1))==UnicodeString(TN)) //convert to msec
+	{
+		Data.Value2 = Data.Value2 + "000";
+	}
+	s=s.SubString(pos+1,s.Length());
+	return Data;
   }
   else if(UnicodeString(s.operator [](1))==UnicodeString(MOV))
   {

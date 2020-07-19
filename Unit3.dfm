@@ -112,9 +112,9 @@ object Form3: TForm3
   object Label3: TLabel
     Left = 132
     Top = 65
-    Width = 5
+    Width = 13
     Height = 13
-    Caption = 's'
+    Caption = 'ms'
   end
   object Var: TComboBox
     Left = 8
@@ -147,10 +147,10 @@ object Form3: TForm3
     Top = 62
     Width = 118
     Height = 22
-    MaxValue = 999
+    MaxValue = 999999
     MinValue = 1
     TabOrder = 3
-    Value = 1
+    Value = 1000
   end
   object typegroup: TRadioGroup
     Left = 8
