@@ -309,35 +309,68 @@ RefreshCiolsUsing();
 //---------------------------------------------------------------------------
 void __fastcall TForm1::inputsDblClick(TObject *Sender)
 {
-if(!this->Unlocked) return;
-if(inputs->Col>0 && !inputs->Cells[0][inputs->Row].Pos("F"))
-{
-if(InputsBox==NULL)
-{
-InputsBox = new TComboBox(Form1);
-InputsBox->Parent= inputs->Parent;
-}
-InputsBox->Items->Clear();
-InputsBox->AddItem("Normal",NULL);
-InputsBox->AddItem("Pull up to Vcc (9...32V)",NULL);
-if(inputs->Cells[inputs->Col][inputs->Row]=="Normal")
+	int i;
+	if(!this->Unlocked)
+		return;
+
+	if(inputs->Col>0 && inputs->Cells[0][inputs->Row].Pos("S"))
 	{
-	  InputsBox->ItemIndex=0;
+		if(InputsBox==NULL)
+		{
+			InputsBox = new TComboBox(Form1);
+			InputsBox->Parent= inputs->Parent;
+		}
+
+		InputsBox->Items->Clear();
+
+		for(i = 1; i < 64; i++)
+		{
+			InputsBox->AddItem(UnicodeString(i), NULL);
+		}
+
+		InputsBox->ItemIndex = inputs->Cells[inputs->Col][inputs->Row].ToInt() - 1;
+
+		InputsBox->Left=inputs->DefaultColWidth*inputs->Col+inputs->Left+3;
+		InputsBox->Top =inputs->DefaultRowHeight*inputs->Row+inputs->Top+1+inputs->Row;
+		InputsBox->Width = inputs->DefaultColWidth+1;
+		InputsBox->Height = inputs->DefaultRowHeight+1;
+		InputsBox->Visible=true;
+		InputsBox->OnSelect = ComboBox1Select;
+		InputsBox->OnKeyPress = ComboBox1KeyPress;
+		InputsBox->SetFocus();
 	}
-else
+	else if(inputs->Col>0 && !inputs->Cells[0][inputs->Row].Pos("F"))
 	{
-	  InputsBox->ItemIndex=1;
+		if(InputsBox==NULL)
+		{
+			InputsBox = new TComboBox(Form1);
+			InputsBox->Parent= inputs->Parent;
+		}
+
+		InputsBox->Items->Clear();
+		InputsBox->AddItem("Normal",NULL);
+		InputsBox->AddItem("Pull up to Vcc (9...32V)",NULL);
+
+		if(inputs->Cells[inputs->Col][inputs->Row]=="Normal")
+		{
+			InputsBox->ItemIndex=0;
+		}
+		else
+		{
+			InputsBox->ItemIndex=1;
+		}
+		Application->ProcessMessages();
+
+		InputsBox->Left=inputs->DefaultColWidth*inputs->Col+inputs->Left+3;
+		InputsBox->Top =inputs->DefaultRowHeight*inputs->Row+inputs->Top+1+inputs->Row;
+		InputsBox->Width = inputs->DefaultColWidth+1;
+		InputsBox->Height = inputs->DefaultRowHeight+1;
+		InputsBox->Visible=true;
+		InputsBox->OnSelect = ComboBox1Select;
+		InputsBox->OnKeyPress = ComboBox1KeyPress;
+		InputsBox->SetFocus();
 	}
-Application->ProcessMessages();
-InputsBox->Left=inputs->DefaultColWidth*inputs->Col+inputs->Left+3;
-InputsBox->Top =inputs->DefaultRowHeight*inputs->Row+inputs->Top+1+inputs->Row;
-InputsBox->Width = inputs->DefaultColWidth+1;
-InputsBox->Height = inputs->DefaultRowHeight+1;
-InputsBox->Visible=true;
-InputsBox->OnSelect = ComboBox1Select;
-InputsBox->OnKeyPress = ComboBox1KeyPress;
-InputsBox->SetFocus();
-}
+
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::ComboBox1Select(TObject *Sender)
@@ -396,56 +429,68 @@ void __fastcall TForm1::NewExecute(TObject *Sender)
 		frame2_count = 0;
 	}
 	inputs->Strings->Clear();
-for(int i=0; i<MAXCOIL; i++)
-{
- if(i<=9) inputs->InsertRow("F0"+UnicodeString(i),"Y0"+UnicodeString(i)+" Load Feedback (0...100%)",true);
- else inputs->InsertRow("F"+UnicodeString(i),"Y"+UnicodeString(i)+" Load Feedback (0...100%)",true);
-}
-for(int i=0; i<MAXIVAR; i++)
-{
- if(i<=9) inputs->InsertRow("I0"+UnicodeString(i),"Normal",true);
- else inputs->InsertRow("I"+UnicodeString(i),"Normal",true);
-}
-MVars->Strings->Clear();
-for(int i=0; i<MAXMVAR; i++)
-{
- if(i<=9) MVars->InsertRow("M0"+UnicodeString(i),"",true);
- else MVars->InsertRow("M"+UnicodeString(i),"",true);
-}
-Timers->Strings->Clear();
-for(int i=0; i<MAXTVAR; i++)
-{
- if(i<=9) Timers->InsertRow("T0"+UnicodeString(i),"",true);
- else Timers->InsertRow("T"+UnicodeString(i),"",true);
- TimersUsed[i]=false;
-}
-outputs->Strings->Clear();
-for(int i=0; i<MAXCOIL; i++)
-{
- if(i<=9) outputs->InsertRow("Y0"+UnicodeString(i),"Power output No. "+UnicodeString(i+1),true);
- else outputs->InsertRow("Y"+UnicodeString(i),"Power output No. "+UnicodeString(i+1),true);
-}
-for (int i=0; i < MAXCOIL+MAXMVAR; i++)
-{
-	CoilsUsed[i]=0;
-}
-if(LadGraph->nets!=NULL)
-{
-	while(1)
+	for(int i=0; i<MAXCOIL; i++)
 	{
-	 if(LadGraph->nets->Grid!=NULL)
-		LadGraph->SetCurrentGrid(LadGraph->nets->Grid);
-	 else break;
-	 LadGraph->DeleteCurrentAction(true);
-    }
-}
-NewActExecute(Sender);
-Tabs->TabIndex=0;
-LastFilename="";
-OpenDialog1->FileName="";
-SaveDialog1->FileName="";
-SetModified(false);
-this->BuildWindowAttributes("");
+		if(i<=9)
+			inputs->InsertRow("F0"+UnicodeString(i),"Y0"+UnicodeString(i)+" Load Feedback (0...100%)",true);
+		else
+			inputs->InsertRow("F"+UnicodeString(i),"Y"+UnicodeString(i)+" Load Feedback (0...100%)",true);
+	}
+	for(int i=0; i<MAXIVAR; i++)
+	{
+		if(i<=9)
+			inputs->InsertRow("I0"+UnicodeString(i),"Normal",true);
+		else
+			inputs->InsertRow("I"+UnicodeString(i),"Normal",true);
+	}
+	inputs->InsertRow("Startup LED blink count", "1", true);
+
+	MVars->Strings->Clear();
+	for(int i=0; i<MAXMVAR; i++)
+	{
+		if(i<=9)
+			MVars->InsertRow("M0"+UnicodeString(i),"",true);
+		else
+			MVars->InsertRow("M"+UnicodeString(i),"",true);
+	}
+	Timers->Strings->Clear();
+	for(int i=0; i<MAXTVAR; i++)
+	{
+		if(i<=9)
+			Timers->InsertRow("T0"+UnicodeString(i),"",true);
+		else
+			Timers->InsertRow("T"+UnicodeString(i),"",true);
+		TimersUsed[i]=false;
+	}
+	outputs->Strings->Clear();
+	for(int i=0; i<MAXCOIL; i++)
+	{
+		if(i<=9)
+			outputs->InsertRow("Y0"+UnicodeString(i),"Power output No. "+UnicodeString(i+1),true);
+		else
+			outputs->InsertRow("Y"+UnicodeString(i),"Power output No. "+UnicodeString(i+1),true);
+	}
+	for (int i=0; i < MAXCOIL+MAXMVAR; i++)
+	{
+		CoilsUsed[i]=0;
+	}
+	if(LadGraph->nets!=NULL)
+	{
+		while(1)
+		{
+		 if(LadGraph->nets->Grid!=NULL)
+			LadGraph->SetCurrentGrid(LadGraph->nets->Grid);
+		 else break;
+		 LadGraph->DeleteCurrentAction(true);
+		}
+	}
+	NewActExecute(Sender);
+	Tabs->TabIndex=0;
+	LastFilename="";
+	OpenDialog1->FileName="";
+	SaveDialog1->FileName="";
+	SetModified(false);
+	this->BuildWindowAttributes("");
 }
 //---------------------------------------------------------------------------
 void TForm1::PrepareContacts(TForm3 * frm)
@@ -1232,6 +1277,7 @@ void __fastcall TForm1::programmExecute(TObject *Sender)
 //#define MAXCOIL		2
 //#define MAXACTIONS	20
 	int i;
+	int blink_count;
 	AnsiString t;
 	int16_t size, temp;
 	UnicodeString ladprg = LadGraph->CompileLADProgramm();
@@ -1249,13 +1295,18 @@ void __fastcall TForm1::programmExecute(TObject *Sender)
 	//делаем PullUpMask
 	//всего в маске 16 бит. Бит0 = вход 0;
 	//Бит=0 -> нормельный режим, иначе включить PullUp
-	for(int i=0; i<inputs->RowCount-1; i++)
+	for(i = 0; i < inputs->RowCount-1; i++)
 	{
-		if(inputs->Cells[1][i+1]!="Normal")
-			{
-			  temp=temp| (uint16_t)(1<<i);
-			}
+		if(inputs->Cells[0][i+1].Pos("S"))
+		{
+			t = "B" + inputs->Cells[1][i+1] + "\n" ;
+		}
+		else if(inputs->Cells[1][i+1]!="Normal")
+		{
+			temp=temp| (uint16_t)(1<<i);
+		}
 	}
+	prog->Write(t.c_str(), t.Length());
 	prog->Write(&temp,sizeof(uint16_t));
 	//записываем иксы
 	temp=0;  //в нем будет количество иксов
