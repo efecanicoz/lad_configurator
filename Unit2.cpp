@@ -70,38 +70,48 @@ BuildCondition();
 //---------------------------------------------------------------------------
 void TFrame2::BuildCondition()
 {
-if(Input->Text.Pos("F"))
+	if(Input->Text.Pos("F"))
 	{
 		rg->ItemIndex=0;
 		rg->DragMode=dmAutomatic;
 		rg->Items[0].Text="%";
 	}
-else
+	else
 	{
 		rg->DragMode=dmManual;
-		rg->Items[0].Text="% of VCC\rVolts";
+		rg->Items[0].Text="% of VCC\rmilliVolts";
 	}
-if(rg->ItemIndex==0)
-{
-	if(value->Value>100) value->Value=50;
-	value->MinValue=0;
-	value->MaxValue=100;
-}
-else
-{
-  if(value->Value>32) value->Value=32;
-  if(value->Value<8) value->Value=8;
-  value->MinValue=8;
-  value->MaxValue=32;
-}
-if(Lock) return;
-if(VarIndex<=9) Var = "X0"+UnicodeString(VarIndex);
-else Var = "X"+UnicodeString(VarIndex);
-Variable->Caption = Var;
-Condition_String = Input->Text+Condition->Text;
-if(this->rg->ItemIndex==0)Condition_String=Condition_String+"%";
-Condition_String=Condition_String+UnicodeString(value->Value);
-Condition_String = Condition_String+"B"+Var;
+	if(rg->ItemIndex==0)
+	{
+		if(value->Value>100)
+			value->Value=50;
+		value->MinValue=0;
+		value->MaxValue=100;
+	}
+	else
+	{
+/*		if(value->Value>32000)
+			value->Value=32000;
+		if(value->Value<8000)
+			value->Value=8000;*/
+		value->MinValue=8000;
+		value->MaxValue=32000;
+	}
+	if(Lock)
+		return;
+	if(VarIndex<=9)
+		Var = "X0"+UnicodeString(VarIndex);
+	else
+		Var = "X"+UnicodeString(VarIndex);
+
+	Variable->Caption = Var;
+	Condition_String = Input->Text+Condition->Text;
+
+	if(this->rg->ItemIndex==0)
+		Condition_String=Condition_String+"%";
+
+	Condition_String=Condition_String+UnicodeString(value->Value);
+	Condition_String = Condition_String+"B"+Var;
 }
 //---------------------------------------------------------------------------
 void __fastcall TFrame2::boxKeyPress(TObject *Sender, System::WideChar &Key)
@@ -111,21 +121,23 @@ Key=NULL;
 //---------------------------------------------------------------------------
 void __fastcall TFrame2::rgClick(TObject *Sender)
 {
-if(rg->ItemIndex==0)
-{
-	if(value->Value>100) value->Value=50;
-	value->MinValue=0;
-	value->MaxValue=100;
-}
-else
-{
-  if(value->Value>32) value->Value=32;
-  if(value->Value<8) value->Value=8;
-	value->MinValue=8;
-	value->MaxValue=32;
-}
-Form1->Modified=true;
-BuildCondition();
+	if(rg->ItemIndex==0)
+	{
+		if(value->Value>100) value->Value=50;
+		value->MinValue=0;
+		value->MaxValue=100;
+	}
+	else
+	{
+/*		if(value->Value>32000)
+			value->Value=32000;
+		if(value->Value<8000)
+			value->Value=8000; */
+		value->MinValue=8000;
+		value->MaxValue=32000;
+	}
+	Form1->Modified=true;
+	BuildCondition();
 }
 //---------------------------------------------------------------------------
 void __fastcall TFrame2::InputSelect(TObject *Sender)
