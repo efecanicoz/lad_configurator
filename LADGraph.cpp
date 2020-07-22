@@ -646,7 +646,7 @@ if(Grid==this->CurrentGrid && ACol==Grid->Col && ARow==Grid->Row)
 	else
 	{
 	 MyTextOut(Grid,GetCenterH(Rect)+15,GetCenterV(Rect)-h-8,param->Value);
-	 MyTextOut(Grid,Rect.Left+10,GetCenterV(Rect)-h+4,param->Value2+"s");
+	 MyTextOut(Grid,Rect.Left+10,GetCenterV(Rect)-h+4,param->Value2+"ms");
 	}
 
 }
