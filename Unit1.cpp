@@ -1330,7 +1330,7 @@ void __fastcall TForm1::programmExecute(TObject *Sender)
 	{
 		if(inputs->Cells[0][i+1].Pos("S"))
 		{
-			t = "B" + inputs->Cells[1][i+1] + "\n" ;
+			t = "L" + inputs->Cells[1][i+1] + "\n" ;
 		}
 		else if(inputs->Cells[1][i+1]!="Normal")
 		{
@@ -1680,6 +1680,15 @@ void __fastcall TForm1::countersKeyPress(TObject *Sender, System::WideChar &Key)
 	{
 		SetModified(true);
 	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Action2Execute(TObject *Sender)
+{
+	if(1)
+	{
+		;
+    }
 }
 //---------------------------------------------------------------------------
 

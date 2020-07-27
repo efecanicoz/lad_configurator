@@ -40,14 +40,12 @@ object Form1: TForm1
     Top = 34
     Width = 1106
     Height = 592
-    ActivePage = Variables
+    ActivePage = LAD
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 978
     object IO: TTabSheet
       Caption = 'IO'
       TabVisible = False
-      ExplicitWidth = 1086
       object GroupBox1: TGroupBox
         Left = 0
         Top = 0
@@ -56,7 +54,6 @@ object Form1: TForm1
         Align = alClient
         Caption = 'Inputs settings (double click to edit IXX Logic)'
         TabOrder = 0
-        ExplicitWidth = 1086
         object inputs: TValueListEditor
           Left = 2
           Top = 15
@@ -78,7 +75,6 @@ object Form1: TForm1
             'Logic of work')
           OnDblClick = inputsDblClick
           OnKeyPress = inputsKeyPress
-          ExplicitWidth = 1082
         end
       end
     end
@@ -86,7 +82,6 @@ object Form1: TForm1
       Caption = 'Variables'
       ImageIndex = 1
       TabVisible = False
-      ExplicitWidth = 970
       object GroupBox3: TGroupBox
         Left = 0
         Top = 0
@@ -96,7 +91,6 @@ object Form1: TForm1
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'Variables whose value depends on conditions'
         TabOrder = 0
-        ExplicitWidth = 970
         object ActionToolBar3: TActionToolBar
           Left = 2
           Top = 15
@@ -118,7 +112,6 @@ object Form1: TForm1
           ParentShowHint = False
           ShowHint = True
           Spacing = 0
-          ExplicitWidth = 966
         end
         object ScrollBox2: TScrollBox
           Left = 2
@@ -149,7 +142,6 @@ object Form1: TForm1
               'Counter'
               'Init Value')
             OnKeyPress = countersKeyPress
-            ExplicitWidth = 260
             ColWidths = (
               150
               138)
@@ -177,7 +169,6 @@ object Form1: TForm1
             'Variable'
             'User Notes (if needed)')
           OnKeyPress = MVarsKeyPress
-          ExplicitWidth = 311
           ColWidths = (
             150
             207)
@@ -191,8 +182,6 @@ object Form1: TForm1
         Align = alClient
         Caption = 'Timers'
         TabOrder = 2
-        ExplicitLeft = 363
-        ExplicitTop = 321
         object Timers: TValueListEditor
           Left = 2
           Top = 15
@@ -206,8 +195,6 @@ object Form1: TForm1
             'Timer Name'
             'User Notes (if needed)')
           OnKeyPress = TimersKeyPress
-          ExplicitTop = 14
-          ExplicitWidth = 226
           ColWidths = (
             150
             271)
@@ -221,7 +208,6 @@ object Form1: TForm1
         Align = alRight
         Caption = 'Outputs'
         TabOrder = 3
-        ExplicitTop = 321
         object outputs: TValueListEditor
           Left = 2
           Top = 15
@@ -246,7 +232,6 @@ object Form1: TForm1
       Caption = 'LAD'
       ImageIndex = 2
       TabVisible = False
-      ExplicitWidth = 970
       object ActionToolBar2: TActionToolBar
         Left = 0
         Top = 0
@@ -268,7 +253,6 @@ object Form1: TForm1
         ParentShowHint = False
         ShowHint = True
         Spacing = 0
-        ExplicitWidth = 970
       end
       object ScrollBox1: TScrollBox
         Left = 0
@@ -279,7 +263,6 @@ object Form1: TForm1
         Align = alClient
         TabOrder = 1
         OnResize = ScrollBox1Resize
-        ExplicitWidth = 970
       end
     end
   end
@@ -317,7 +300,6 @@ object Form1: TForm1
         Text = 'LAD siagramm revision:'
         Width = 200
       end>
-    ExplicitWidth = 1123
   end
   object ActionToolBar1: TActionToolBar
     Left = 0
@@ -340,7 +322,6 @@ object Form1: TForm1
     ParentShowHint = False
     ShowHint = True
     Spacing = 0
-    ExplicitWidth = 1123
   end
   object ImageList1: TImageList
     ColorDepth = cd16Bit
@@ -10784,6 +10765,10 @@ object Form1: TForm1
             ImageIndex = 14
           end
           item
+            Action = Action2
+            Caption = 'Inc C'
+          end
+          item
             Caption = '-'
           end
           item
@@ -10993,6 +10978,10 @@ object Form1: TForm1
       Caption = 'DeleteVariable'
       Enabled = False
       OnExecute = DeleteVariableExecute
+    end
+    object Action2: TAction
+      Caption = 'Action2'
+      OnExecute = Action2Execute
     end
   end
   object SaveDialog1: TSaveDialog

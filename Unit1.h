@@ -124,6 +124,7 @@ __published:	// IDE-managed Components
 	TAction *Action1;
 	TGroupBox *GroupBox6;
 	TValueListEditor *counters;
+	TAction *Action2;
 	void __fastcall twClick(TObject *Sender);
 	void __fastcall StringGrid1DrawCell(TObject *Sender, int ACol, int ARow, TRect &Rect, TGridDrawState State);
 	void __fastcall StringGrid1Click(TObject *Sender);
@@ -164,6 +165,7 @@ __published:	// IDE-managed Components
 	void __fastcall RevisionExecute(TObject *Sender);
 	void __fastcall DeleteVariableExecute(TObject *Sender);
 	void __fastcall countersKeyPress(TObject *Sender, System::WideChar &Key);
+	void __fastcall Action2Execute(TObject *Sender);
 private:	// User declarations
 	TLadGraph * LadGraph;
 	bool TimersUsed[MAXTVAR];
