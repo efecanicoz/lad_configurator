@@ -41,6 +41,7 @@
 #define MAXIOVAR	15
 #define MAXMVAR		15
 #define MAXTVAR		10
+#define MAXCVAR		15
 #define MAXCOIL		2
 #define MAXACTIONS	20
 //---------------------------------------------------------------------------
@@ -162,6 +163,7 @@ __published:	// IDE-managed Components
 	void __fastcall progtimeoutTimer(TObject *Sender);
 	void __fastcall RevisionExecute(TObject *Sender);
 	void __fastcall DeleteVariableExecute(TObject *Sender);
+	void __fastcall countersKeyPress(TObject *Sender, System::WideChar &Key);
 private:	// User declarations
 	TLadGraph * LadGraph;
 	bool TimersUsed[MAXTVAR];

@@ -148,6 +148,7 @@ object Form1: TForm1
             TitleCaptions.Strings = (
               'Counter'
               'Init Value')
+            OnKeyPress = countersKeyPress
             ExplicitWidth = 260
             ColWidths = (
               150
@@ -190,8 +191,8 @@ object Form1: TForm1
         Align = alClient
         Caption = 'Timers'
         TabOrder = 2
-        ExplicitLeft = 564
-        ExplicitWidth = 230
+        ExplicitLeft = 363
+        ExplicitTop = 321
         object Timers: TValueListEditor
           Left = 2
           Top = 15

@@ -18,30 +18,46 @@ TForm1 *Form1;
 __fastcall TForm1::TForm1(TComponent* Owner)
 	: TForm(Owner)
 {
-LadGraph = new TLadGraph(ImageList1);
-PosWrite=false;
-tw->FullExpand();
-Modified=false;
-InputsBox=NULL;
-MVars->DeleteRow(1);
-for(int i=0; i<MAXMVAR; i++)
-{
- if(i<=9) MVars->InsertRow("M0"+UnicodeString(i),"",true);
- else MVars->InsertRow("M"+UnicodeString(i),"",true);
-}
-Timers->DeleteRow(1);
-for(int i=0; i<MAXTVAR; i++)
-{
- if(i<=9) Timers->InsertRow("T0"+UnicodeString(i),"",true);
- else Timers->InsertRow("T"+UnicodeString(i),"",true);
-}
-Tabs->ActivePageIndex=0;
-Unlocked=false;
-StartWindowName = Form1->Caption;
-BuildWindowAttributes("");
-progr = new TForm6(this);
-ProgRevision=1;
-frame2_count = 0;
+	LadGraph = new TLadGraph(ImageList1);
+	PosWrite=false;
+	tw->FullExpand();
+	Modified=false;
+	InputsBox=NULL;
+	MVars->DeleteRow(1);
+	for(int i=0; i<MAXMVAR; i++)
+	{
+		if(i<=9)
+			MVars->InsertRow("M0"+UnicodeString(i),"",true);
+		else
+			MVars->InsertRow("M"+UnicodeString(i),"",true);
+	}
+
+	Timers->DeleteRow(1);
+	for(int i=0; i<MAXTVAR; i++)
+	{
+		if(i<=9)
+			Timers->InsertRow("T0"+UnicodeString(i),"",true);
+		else
+			Timers->InsertRow("T"+UnicodeString(i),"",true);
+	}
+
+	counters->DeleteRow(1);
+	for(int i=0; i<MAXCVAR; i++)
+	{
+		if(i<=9)
+			counters->InsertRow("C0"+UnicodeString(i),"",true);
+		else
+			counters->InsertRow("C"+UnicodeString(i),"",true);
+	}
+
+
+	Tabs->ActivePageIndex=0;
+	Unlocked=false;
+	StartWindowName = Form1->Caption;
+	BuildWindowAttributes("");
+	progr = new TForm6(this);
+	ProgRevision=1;
+	frame2_count = 0;
 }
 //---------------------------------------------------------------------------
 void  TForm1::GetFileVersion(LPCSTR filename,char * sVer, int slen)
@@ -408,9 +424,14 @@ void __fastcall TForm1::AddVariableExecute(TObject *Sender)
         frame2_count++;
 	}
 	frame->Input->Clear();
-	for(int i=1; i<inputs->RowCount; i++)
+	for(int i=1; i<(inputs->RowCount -1); i++)
 	{
 		frame->Input->Items->Add(inputs->Cells[0][i]);
+	}
+
+	for(int i=1; i<(counters->RowCount); i++)
+	{
+		frame->Input->Items->Add(counters->Cells[0][i]);
 	}
 	frame->Input->ItemIndex=MAXCOIL;
 	frame->SetLock(!Unlocked);
@@ -462,6 +483,16 @@ void __fastcall TForm1::NewExecute(TObject *Sender)
 			Timers->InsertRow("T"+UnicodeString(i),"",true);
 		TimersUsed[i]=false;
 	}
+
+	counters->Strings->Clear();
+	for(int i=0; i<MAXCVAR; i++)
+	{
+		if(i<=9)
+			counters->InsertRow("C0"+UnicodeString(i),"",true);
+		else
+			counters->InsertRow("C"+UnicodeString(i),"",true);
+	}
+
 	outputs->Strings->Clear();
 	for(int i=0; i<MAXCOIL; i++)
 	{
@@ -1635,6 +1666,20 @@ void __fastcall TForm1::DeleteVariableExecute(TObject *Sender)
     LadGraph->UpdateConditionNames(index_to_del);
 
 	return;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::countersKeyPress(TObject *Sender, System::WideChar &Key)
+{
+	if(!this->Unlocked)
+	{
+		Key=NULL;
+	}
+	else
+	{
+		SetModified(true);
+	}
 }
 //---------------------------------------------------------------------------
 
