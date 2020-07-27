@@ -10,8 +10,8 @@ bool TComPort::EnumPorts(TStringList *List)
 {
     if(List==NULL) return false;
 	List->Clear();
-    TCHAR szDevices[65535];
-	DWORD dwChars = QueryDosDevice(NULL, szDevices, 65535);
+	TCHAR szDevices[65535 * 2];
+	DWORD dwChars = QueryDosDevice(NULL, szDevices, (65535 * 2));
 	if(dwChars)
 		{
 		 int i=0;
@@ -36,8 +36,10 @@ bool TComPort::EnumPorts(TStringList *List)
 		   // NULL, мы дошли до конца
 		   if(szDevices[i] == _T('\0'))
 		   {
-		   if(List->Text!="") return true;
-		   else return false;
+				if(List->Text!="")
+					return true;
+				else
+					return false;
 		   }
 		 }
         }

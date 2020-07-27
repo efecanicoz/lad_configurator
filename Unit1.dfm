@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = 'SciSonic LAD configurator'
   ClientHeight = 645
-  ClientWidth = 1123
+  ClientWidth = 1251
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -38,30 +38,29 @@ object Form1: TForm1
   object Tabs: TPageControl
     Left = 145
     Top = 34
-    Width = 978
+    Width = 1106
     Height = 592
-    ActivePage = LAD
+    ActivePage = Variables
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 978
     object IO: TTabSheet
       Caption = 'IO'
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 1086
       object GroupBox1: TGroupBox
         Left = 0
         Top = 0
-        Width = 970
+        Width = 1098
         Height = 582
         Align = alClient
         Caption = 'Inputs settings (double click to edit IXX Logic)'
         TabOrder = 0
+        ExplicitWidth = 1086
         object inputs: TValueListEditor
           Left = 2
           Top = 15
-          Width = 966
+          Width = 1094
           Height = 565
           Align = alClient
           DefaultColWidth = 250
@@ -79,6 +78,7 @@ object Form1: TForm1
             'Logic of work')
           OnDblClick = inputsDblClick
           OnKeyPress = inputsKeyPress
+          ExplicitWidth = 1082
         end
       end
     end
@@ -86,19 +86,21 @@ object Form1: TForm1
       Caption = 'Variables'
       ImageIndex = 1
       TabVisible = False
+      ExplicitWidth = 970
       object GroupBox3: TGroupBox
         Left = 0
         Top = 0
-        Width = 970
+        Width = 1098
         Height = 323
         Align = alTop
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'Variables whose value depends on conditions'
         TabOrder = 0
+        ExplicitWidth = 970
         object ActionToolBar3: TActionToolBar
           Left = 2
           Top = 15
-          Width = 966
+          Width = 1094
           Height = 34
           ActionManager = Actions
           Caption = 'ActionToolBar3'
@@ -116,14 +118,41 @@ object Form1: TForm1
           ParentShowHint = False
           ShowHint = True
           Spacing = 0
+          ExplicitWidth = 966
         end
         object ScrollBox2: TScrollBox
           Left = 2
           Top = 49
-          Width = 966
+          Width = 796
           Height = 272
           Align = alClient
           TabOrder = 1
+        end
+        object GroupBox6: TGroupBox
+          Left = 798
+          Top = 49
+          Width = 298
+          Height = 272
+          Align = alRight
+          Caption = 'Counters'
+          TabOrder = 2
+          object counters: TValueListEditor
+            Left = 2
+            Top = 15
+            Width = 294
+            Height = 255
+            Align = alClient
+            Strings.Strings = (
+              'C00=')
+            TabOrder = 0
+            TitleCaptions.Strings = (
+              'Counter'
+              'Init Value')
+            ExplicitWidth = 260
+            ColWidths = (
+              150
+              138)
+          end
         end
       end
       object GroupBox2: TGroupBox
@@ -147,6 +176,7 @@ object Form1: TForm1
             'Variable'
             'User Notes (if needed)')
           OnKeyPress = MVarsKeyPress
+          ExplicitWidth = 311
           ColWidths = (
             150
             207)
@@ -155,15 +185,17 @@ object Form1: TForm1
       object GroupBox4: TGroupBox
         Left = 367
         Top = 323
-        Width = 303
+        Width = 431
         Height = 259
         Align = alClient
         Caption = 'Timers'
         TabOrder = 2
+        ExplicitLeft = 564
+        ExplicitWidth = 230
         object Timers: TValueListEditor
           Left = 2
           Top = 15
-          Width = 299
+          Width = 427
           Height = 242
           Align = alClient
           Strings.Strings = (
@@ -173,19 +205,22 @@ object Form1: TForm1
             'Timer Name'
             'User Notes (if needed)')
           OnKeyPress = TimersKeyPress
+          ExplicitTop = 14
+          ExplicitWidth = 226
           ColWidths = (
             150
-            143)
+            271)
         end
       end
       object GroupBox5: TGroupBox
-        Left = 670
+        Left = 798
         Top = 323
         Width = 300
         Height = 259
         Align = alRight
         Caption = 'Outputs'
         TabOrder = 3
+        ExplicitTop = 321
         object outputs: TValueListEditor
           Left = 2
           Top = 15
@@ -210,10 +245,11 @@ object Form1: TForm1
       Caption = 'LAD'
       ImageIndex = 2
       TabVisible = False
+      ExplicitWidth = 970
       object ActionToolBar2: TActionToolBar
         Left = 0
         Top = 0
-        Width = 970
+        Width = 1098
         Height = 34
         ActionManager = Actions
         Caption = 'ActionToolBar2'
@@ -231,16 +267,18 @@ object Form1: TForm1
         ParentShowHint = False
         ShowHint = True
         Spacing = 0
+        ExplicitWidth = 970
       end
       object ScrollBox1: TScrollBox
         Left = 0
         Top = 34
-        Width = 970
+        Width = 1098
         Height = 548
         VertScrollBar.Tracking = True
         Align = alClient
         TabOrder = 1
         OnResize = ScrollBox1Resize
+        ExplicitWidth = 970
       end
     end
   end
@@ -267,7 +305,7 @@ object Form1: TForm1
   object StatusBar1: TStatusBar
     Left = 0
     Top = 626
-    Width = 1123
+    Width = 1251
     Height = 19
     Panels = <
       item
@@ -278,11 +316,12 @@ object Form1: TForm1
         Text = 'LAD siagramm revision:'
         Width = 200
       end>
+    ExplicitWidth = 1123
   end
   object ActionToolBar1: TActionToolBar
     Left = 0
     Top = 0
-    Width = 1123
+    Width = 1251
     Height = 34
     ActionManager = Actions
     Caption = 'ActionToolBar1'
@@ -300,6 +339,7 @@ object Form1: TForm1
     ParentShowHint = False
     ShowHint = True
     Spacing = 0
+    ExplicitWidth = 1123
   end
   object ImageList1: TImageList
     ColorDepth = cd16Bit

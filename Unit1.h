@@ -121,6 +121,8 @@ __published:	// IDE-managed Components
 	TMenuItem *LAD1;
 	TMenuItem *ChangeLADrevision1;
 	TAction *Action1;
+	TGroupBox *GroupBox6;
+	TValueListEditor *counters;
 	void __fastcall twClick(TObject *Sender);
 	void __fastcall StringGrid1DrawCell(TObject *Sender, int ACol, int ARow, TRect &Rect, TGridDrawState State);
 	void __fastcall StringGrid1Click(TObject *Sender);
