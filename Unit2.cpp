@@ -76,13 +76,24 @@ void TFrame2::BuildCondition()
 		rg->DragMode=dmAutomatic;
 		rg->Items[0].Text="% \rmilliAmperes";
 	}
+	else if(Input->Text.Pos("C"))
+	{
+		//rg->ItemIndex=0;
+		rg->DragMode=dmAutomatic;
+		rg->Items[0].Text="count";
+	}
 	else
 	{
 		rg->DragMode=dmManual;
 		rg->Items[0].Text="% of VCC\rmilliVolts";
 	}
 
-	if(rg->ItemIndex==0)
+	if(Input->Text.Pos("C"))
+	{
+		value->MinValue=0;
+		value->MaxValue=65535;
+    }
+	else if(rg->ItemIndex==0)
 	{
 		if(value->Value > 100)
 			value->Value=100;
@@ -127,22 +138,6 @@ Key=NULL;
 //---------------------------------------------------------------------------
 void __fastcall TFrame2::rgClick(TObject *Sender)
 {
-	/*if(rg->ItemIndex==0)
-	{
-		if(value->Value>100)
-			value->Value=50;
-		value->MinValue=0;
-		value->MaxValue=100;
-	}
-	else
-	{
-		if(value->Value>32000)
-			value->Value=32000;
-		if(value->Value<8000)
-			value->Value=8000;
-		value->MinValue=8000;
-		value->MaxValue=32000;
-	}*/
 	Form1->Modified=true;
 	BuildCondition();
 }
