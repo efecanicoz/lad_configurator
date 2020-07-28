@@ -46,6 +46,10 @@ object Form1: TForm1
     object IO: TTabSheet
       Caption = 'IO'
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 0
         Top = 0
@@ -10769,11 +10773,18 @@ object Form1: TForm1
             Caption = 'Inc C'
           end
           item
+            Action = Action3
+            Caption = '&Dec C'
+          end
+          item
+            Action = Action4
+            Caption = 'Re&s C'
+          end
+          item
             Caption = '-'
           end
           item
             Action = Delete
-            Caption = '&Delete Selected'
             ImageIndex = 16
           end
           item
@@ -10781,7 +10792,7 @@ object Form1: TForm1
           end
           item
             Action = Comp
-            Caption = 'Te&st and fix It...'
+            Caption = 'Test and &fix It...'
             ImageIndex = 18
           end>
         ActionBar = ActionToolBar2
@@ -10982,6 +10993,14 @@ object Form1: TForm1
     object Action2: TAction
       Caption = 'Action2'
       OnExecute = Action2Execute
+    end
+    object Action3: TAction
+      Caption = 'Action3'
+      OnExecute = Action3Execute
+    end
+    object Action4: TAction
+      Caption = 'Action4'
+      OnExecute = Action4Execute
     end
   end
   object SaveDialog1: TSaveDialog

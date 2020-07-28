@@ -43,6 +43,9 @@
 #define LINE_FU		  	"13"
 #define LINE_UDF	  	"14"
 #define LINE_DOW	  	"15"
+#define CINC            "16"
+#define CDEC            "17"
+#define CRES            "18"
 
 #define DELIM			"|"
 #define ACT_DELIM		"\r"
@@ -143,7 +146,10 @@ public:
 	bool CurrentCellIsFBD();
 	bool CoilTypeIsDirect(Nets *net, UnicodeString &CoilName);
 	bool CellIsTimer(TStringGrid *Grid, int Arow, int Acol, int &TimerIndex);
-    void TLadGraph::UpdateConditionNames(int upper_limit);
+	void TLadGraph::UpdateConditionNames(int upper_limit);
+	bool TLadGraph::Add_CRES(TStringGrid *Grid, UnicodeString CounterName, int reset_val);
+	bool TLadGraph::Add_CINC(TStringGrid *Grid, UnicodeString CounterName);
+	bool TLadGraph::Add_CDEC(TStringGrid *Grid, UnicodeString CounterName);
 };
 
 

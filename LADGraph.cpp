@@ -440,7 +440,7 @@ void TLadGraph::InsertRow(TStringGrid *Grid, int CurRow)
   CanGridsResize(Grid);
 }
 //---------------------------------------------------------------------------
-void TLadGraph::InsertCol(TStringGrid *Grid, int CurCol)
+ void TLadGraph::InsertCol(TStringGrid *Grid, int CurCol)
 {
 	TMyGrid * gr = ((TMyGrid*)Grid);
 	gr->ColCount++;
@@ -806,7 +806,7 @@ UnicodeString TLadGraph::SetCellParam(CellParam * Param)
 {
   UnicodeString Res;
   Res=Param->Param+UnicodeString(DELIM)+Param->Value;
-  if(Param->Param==TOF || Param->Param==TON)
+  if(Param->Param==TOF || Param->Param==TON || Param->Param==CDEC || Param->Param==CINC || Param->Param==CRES)
 	{
 		Res = Res+UnicodeString(DELIM)+Param->Value2;
 	}
@@ -882,6 +882,35 @@ bool TLadGraph::Add_RESET_Coil(TStringGrid *Grid, UnicodeString Parameter)
    param.Param = RE;
    param.Value = Parameter;
    return AddRelays(Grid, &param);
+}
+//---------------------------------------------------------------------------
+bool TLadGraph::Add_CRES(TStringGrid *Grid, UnicodeString CounterName, int reset_val)
+{
+	if(Grid==NULL)
+		return false;
+	CellParam param;
+	param.Param = CRES;
+	param.Value = CounterName;
+	param.Value2 = UnicodeString(reset_val);
+	return AddRelays(Grid, &param);
+}
+bool TLadGraph::Add_CINC(TStringGrid *Grid, UnicodeString CounterName)
+{
+	if(Grid==NULL)
+		return false;
+	CellParam param;
+	param.Param = CINC;
+	param.Value = CounterName;
+	return AddRelays(Grid, &param);
+}
+bool TLadGraph::Add_CDEC(TStringGrid *Grid, UnicodeString CounterName)
+{
+	if(Grid==NULL)
+		return false;
+	CellParam param;
+	param.Param = CDEC;
+	param.Value = CounterName;
+	return AddRelays(Grid, &param);
 }
 //---------------------------------------------------------------------------
 bool TLadGraph::Add_TON(TStringGrid *Grid, UnicodeString TimerName, int Sec)
@@ -1091,7 +1120,7 @@ bool TLadGraph::isFBD(CellParam param)
 //---------------------------------------------------------------------------
 bool TLadGraph::isCoil(CellParam param)
 {
-  if(param.Param==COIL || param.Param==RE && param.Param==SE) return true;
+  if(param.Param==COIL || (param.Param==RE && param.Param==SE) || param.Param == CINC || param.Param == CDEC || param.Param == CRES) return true;
   return false;
 }
 //---------------------------------------------------------------------------

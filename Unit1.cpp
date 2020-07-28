@@ -9,6 +9,7 @@
 
 #include "Unit1.h"
 #include "Unit8.h"
+#include "Unit9.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "CSPIN"
@@ -1685,10 +1686,94 @@ void __fastcall TForm1::countersKeyPress(TObject *Sender, System::WideChar &Key)
 
 void __fastcall TForm1::Action2Execute(TObject *Sender)
 {
-	if(1)
+	//increment    c
+	TForm9 * frm;
+	int i;
+
+	if(LadGraph->GetCurrentGrid()==NULL)
+		return;
+
+	frm = new TForm9(this);
+	frm->label_reset->Visible = false;
+	frm->input_reset->Visible = false;
+
+	frm->counterDDL->Clear();
+	for(i = 1; i <= MAXCVAR; i++)
 	{
-		;
-    }
+		frm->counterDDL->AddItem(counters->Cells[0][i], NULL);
+	}
+    frm->Caption = frm->Caption + "increment";
+	frm->ShowModal();
+
+	if("" != frm->result)
+	{
+		LadGraph->Add_CINC(LadGraph->GetCurrentGrid(),frm->result);
+		SetModified(true);
+	}
+
+	/*
+	if(frm->Result)
+	{
+		LadGraph->Add_SET_Coil(LadGraph->GetCurrentGrid(),frm->Var->Text);
+		SetModified(true);
+	} */
+	delete frm;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Action3Execute(TObject *Sender)
+{
+	//decrement     c
+        TForm9 * frm;
+	int i;
+
+	if(LadGraph->GetCurrentGrid()==NULL)
+		return;
+
+	frm = new TForm9(this);
+	frm->label_reset->Visible = false;
+	frm->input_reset->Visible = false;
+
+	frm->counterDDL->Clear();
+	for(i = 1; i <= MAXCVAR; i++)
+	{
+		frm->counterDDL->AddItem(counters->Cells[0][i], NULL);
+	}
+	frm->Caption = frm->Caption + "decrement";
+	frm->ShowModal();
+
+	if("" != frm->result)
+	{
+		LadGraph->Add_CDEC(LadGraph->GetCurrentGrid(),frm->result);
+		SetModified(true);
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Action4Execute(TObject *Sender)
+{
+	//reset
+        TForm9 * frm;
+	int i;
+
+	if(LadGraph->GetCurrentGrid()==NULL)
+		return;
+
+	frm = new TForm9(this);
+
+	frm->counterDDL->Clear();
+	for(i = 1; i <= MAXCVAR; i++)
+	{
+		frm->counterDDL->AddItem(counters->Cells[0][i], NULL);
+	}
+	frm->Caption = frm->Caption + "reset";
+	frm->ShowModal();
+
+	if("" != frm->result)
+	{
+		LadGraph->Add_CRES(LadGraph->GetCurrentGrid(),frm->result, frm->reset_val);
+		SetModified(true);
+	}
 }
 //---------------------------------------------------------------------------
 
