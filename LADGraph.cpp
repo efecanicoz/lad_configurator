@@ -1335,6 +1335,31 @@ CellParam TLadGraph::DeCompileCell(UnicodeString &s)
    s=s.SubString(5,s.Length());
    return Data;
   }
+  else if(UnicodeString(s.operator [](1))==UnicodeString(INCC))
+  {
+		Data.Param=CINC;
+		Data.Value=s.SubString(2,3);
+		s=s.SubString(5,s.Length());
+		return Data;
+  }
+  else if(UnicodeString(s.operator [](1))==UnicodeString(DECC))
+  {
+		Data.Param=CDEC;
+		Data.Value=s.SubString(2,3);
+		s=s.SubString(5,s.Length());
+		return Data;
+  }
+  else if(UnicodeString(s.operator [](1))==UnicodeString(RESC))
+  {
+	Data.Param=CRES;
+	int pos = s.Pos(UnicodeString(DELIM));
+	Data.Value=s.SubString(2,pos-2);
+	s=s.SubString(pos+1,s.Length());
+	pos = s.Pos(UnicodeString(DELIM));
+	Data.Value2=s.SubString(1,pos-1);
+	s=s.SubString(pos+1,s.Length());
+	return Data;
+  }
    return Data;
 }
 //---------------------------------------------------------------------------
