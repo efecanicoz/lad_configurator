@@ -1435,65 +1435,65 @@ AnsiString TForm1::ConvertBufToHEXBuf(byte * buf, int len)
 //---------------------------------------------------------------------------
 void TForm1::OnPortRecv(AnsiString Answer)
 {
-int len;
-AnsiString temp;
-progtimeout->Enabled=false;
-if(Answer==OK_ANSWER)
-{
-	if(LastMSG==ENTER_PROGRAMMING_MODE)
+	int len;
+	AnsiString temp;
+	progtimeout->Enabled=false;
+	if(Answer==OK_ANSWER)
 	{
-	temp=ConvertBufToHEXBuf(&ProgRevision,1);
-	LastMSG="!"+temp+"#";
+		if(LastMSG==ENTER_PROGRAMMING_MODE)
+		{
+		temp=ConvertBufToHEXBuf(&ProgRevision,1);
+		LastMSG="!"+temp+"#";
+		len=LastMSG.Length();
+		len=ComPort->PortWrite(LastMSG);
+		return;
+		}
+		else if(LastMSG==CLOSE_PROGRAMMING_MODE)
+		{
+		   StopRecv=true;
+		   progr->Visible=false;
+		   MessageBox(this->Handle, AnsiString("Programming completed successfully.").c_str(),AnsiString("Congratulations").c_str(), MB_ICONINFORMATION);
+		   delete ProgStream;
+		   ProgStream=NULL;
+		   return;
+		}
+		else if(LastMSG.Pos("$"))
+		{
+			count++;
+		}
+	}
+	else if(Answer==BUSY_ANSWER || Answer==REPEAT_ANSWER)
+	{
+	  ComPort->PortWrite(LastMSG);
+	  progtimeout->Enabled=true;
+	  return;
+	}
+	else //if(Answer==ERR_ANSWER)
+	{
+		   StopRecv=true;
+		   progr->Visible=false;
+		   MessageBox(this->Handle, AnsiString("Unknown error while programming the PLC. Operation aborted.").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
+		   delete ProgStream;
+		   ProgStream=NULL;
+		   return;
+	}
+	BYTE buf[MAX_PROG_BUF+1];
+	len = ProgStream->Read(buf, MAX_PROG_BUF);
+	if(len==0)
+	{
+	//выводим из режима программирования
+	LastMSG = CLOSE_PROGRAMMING_MODE;
+	ComPort->PortWrite(LastMSG);
+	progtimeout->Enabled=true;
+	return;
+	}
+	progr->progress->Position=progr->progress->Position+len;
+	buf[len]=0;
+	temp=ConvertBufToHEXBuf(buf,len);
+	LastMSG="$"+AnsiString().sprintf("%03d",count)+AnsiString().sprintf("%03d",temp.Length())+":"+temp+"#";
 	len=LastMSG.Length();
 	len=ComPort->PortWrite(LastMSG);
-	return;
-    }
-	else if(LastMSG==CLOSE_PROGRAMMING_MODE)
-	{
-	   StopRecv=true;
-	   progr->Visible=false;
-	   MessageBox(this->Handle, AnsiString("Programming completed successfully.").c_str(),AnsiString("Congratulations").c_str(), MB_ICONINFORMATION);
-	   delete ProgStream;
-	   ProgStream=NULL;
-	   return;
-	}
-	else if(LastMSG.Pos("$"))
-	{
-        count++;
-    }
-}
-else if(Answer==BUSY_ANSWER || Answer==REPEAT_ANSWER)
-{
-  ComPort->PortWrite(LastMSG);
-  progtimeout->Enabled=true;
-  return;
-}
-else //if(Answer==ERR_ANSWER)
-{
-	   StopRecv=true;
-	   progr->Visible=false;
-	   MessageBox(this->Handle, AnsiString("Unknown error while programming the PLC. Operation aborted.").c_str(),AnsiString("Error").c_str(), MB_ICONERROR);
-	   delete ProgStream;
-	   ProgStream=NULL;
-	   return;
-}
-BYTE buf[MAX_PROG_BUF+1];
-len = ProgStream->Read(buf, MAX_PROG_BUF);
-if(len==0)
-{
-//выводим из режима программирования
-LastMSG = CLOSE_PROGRAMMING_MODE;
-ComPort->PortWrite(LastMSG);
-progtimeout->Enabled=true;
-return;
-}
-progr->progress->Position=progr->progress->Position+len;
-buf[len]=0;
-temp=ConvertBufToHEXBuf(buf,len);
-LastMSG="$"+AnsiString().sprintf("%03d",count)+AnsiString().sprintf("%03d",temp.Length())+":"+temp+"#";
-len=LastMSG.Length();
-len=ComPort->PortWrite(LastMSG);
-progtimeout->Enabled=true;
+	progtimeout->Enabled=true;
 }
 //---------------------------------------------------------------------------
 bool TForm1::SendToPLC(TMemoryStream * stream)

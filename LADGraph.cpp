@@ -580,21 +580,24 @@ void TLadGraph::DrawCelll(TStringGrid *Grid ,CellParam * param, TRect Rect, int 
 	bmp->Height = Grid->DefaultRowHeight;
 	if(param->Param!="")
 	{
-	try
-	{
-	Data->GetBitmap(param->Param.ToInt(),bmp);
-	}
-	catch(...)
-	{}
-	Grid->Canvas->Draw(Rect.Left-MINUSX,Rect.Top,bmp);
-	delete bmp;
+		try
+		{
+			Data->GetBitmap(param->Param.ToInt(),bmp);
+		}
+		catch(...)
+		{
+			;
+		}
+		Grid->Canvas->Draw(Rect.Left-MINUSX,Rect.Top,bmp);
+		delete bmp;
 	}
 	else
 	{
-	Grid->Canvas->Draw(Rect.Left-MINUSX,Rect.Top,bmp);
-    }
+		Grid->Canvas->Draw(Rect.Left-MINUSX,Rect.Top,bmp);
+	}
+
 	if(ACol==1)
-		{
+	{
 		 TPoint p;
 		 p.X = Rect.Left-MINUSX;
 		 p.Y = Rect.Top;
@@ -605,9 +608,9 @@ void TLadGraph::DrawCelll(TStringGrid *Grid ,CellParam * param, TRect Rect, int 
 		 Grid->Canvas->LineTo(Rect.Left+1-MINUSX,Rect.Top);
 		 Grid->Canvas->LineTo(Rect.Left+2-MINUSX,Rect.Top);
 		 Grid->Canvas->LineTo(Rect.Left+2-MINUSX,Rect.Bottom);
-		}
-		else if(ACol==(Grid->ColCount-1))
-		{
+	}
+	else if(ACol==(Grid->ColCount-1))
+	{
 		 TPoint p;
 		 p.X = Rect.Right;
 		 p.Y = Rect.Top;
@@ -618,35 +621,52 @@ void TLadGraph::DrawCelll(TStringGrid *Grid ,CellParam * param, TRect Rect, int 
 		 Grid->Canvas->LineTo(Rect.Right-1,Rect.Top);
 		 Grid->Canvas->LineTo(Rect.Right-2,Rect.Top);
 		 Grid->Canvas->LineTo(Rect.Right-2,Rect.Bottom);
-		}
-if(Grid==this->CurrentGrid && ACol==Grid->Col && ARow==Grid->Row)
-{
-	if(this->isFBD(*param) || this->isCoil(*param) || param->Param==LINE)
+	}
+
+	if(Grid==this->CurrentGrid && ACol==Grid->Col && ARow==Grid->Row)
 	{
-	Grid->Canvas->Pen->Style=psDot;
-	Grid->Canvas->Pen->Color=clRed;
-	Grid->Canvas->Brush->Color=clWhite;
-	Grid->Canvas->Pen->Width=1;
-	Grid->Canvas->MoveTo(Rect.Left, Rect.Top);
-	Grid->Canvas->LineTo(Rect.Left, Rect.Bottom-1);
-	Grid->Canvas->LineTo(Rect.Right-1, Rect.Bottom-1);
-	Grid->Canvas->LineTo(Rect.Right-1, Rect.Top);
-	Grid->Canvas->LineTo(Rect.Left, Rect.Top);
-	Grid->Canvas->Pen->Style=psSolid;
-	Grid->Canvas->Pen->Color=clBlack;
-    }
-}
-	if(param->Value=="") return;
+		if(this->isFBD(*param) || this->isCoil(*param) || param->Param==LINE)
+		{
+		Grid->Canvas->Pen->Style=psDot;
+		Grid->Canvas->Pen->Color=clRed;
+		Grid->Canvas->Brush->Color=clWhite;
+		Grid->Canvas->Pen->Width=1;
+		Grid->Canvas->MoveTo(Rect.Left, Rect.Top);
+		Grid->Canvas->LineTo(Rect.Left, Rect.Bottom-1);
+		Grid->Canvas->LineTo(Rect.Right-1, Rect.Bottom-1);
+		Grid->Canvas->LineTo(Rect.Right-1, Rect.Top);
+		Grid->Canvas->LineTo(Rect.Left, Rect.Top);
+		Grid->Canvas->Pen->Style=psSolid;
+		Grid->Canvas->Pen->Color=clBlack;
+		}
+	}
+	if(param->Value=="")
+		return;
+
 	int h = Grid->Canvas->TextHeight(param->Value);
 	int w = Grid->Canvas->TextWidth(param->Value);
+
+	if(param->Param == CINC)
+	{
+		MyTextOut(Grid,GetCenterH(Rect)-w/2-MINUSX+2, GetCenterV(Rect)+0.5*h, "C INC");
+	}
+	else if(param->Param == CDEC)
+	{
+		MyTextOut(Grid,GetCenterH(Rect)-w/2-MINUSX+2, GetCenterV(Rect)+0.5*h, "C DEC");
+	}
+	else if(param->Param == CRES)
+	{
+		MyTextOut(Grid,GetCenterH(Rect)-w/2-MINUSX+2, GetCenterV(Rect)+0.5*h, "C RESET");
+	}
+
 	if(param->Param!=TOF && param->Param!=TON)
 	{
-	 MyTextOut(Grid,GetCenterH(Rect)-w/2-MINUSX+2,GetCenterV(Rect)-1.5*h,param->Value);
+		MyTextOut(Grid,GetCenterH(Rect)-w/2-MINUSX+2, GetCenterV(Rect)-1.5*h, param->Value);
 	}
 	else
 	{
-	 MyTextOut(Grid,GetCenterH(Rect)+15,GetCenterV(Rect)-h-8,param->Value);
-	 MyTextOut(Grid,Rect.Left+10,GetCenterV(Rect)-h+4,param->Value2+"ms");
+		MyTextOut(Grid,GetCenterH(Rect)+15,GetCenterV(Rect)-h-8,param->Value);
+		MyTextOut(Grid,Rect.Left+10,GetCenterV(Rect)-h+4,param->Value2+"ms");
 	}
 
 }
@@ -1082,34 +1102,27 @@ bool TLadGraph::Add_DOWN_TOF(TStringGrid *Grid, UnicodeString Parameter, int Sec
 UnicodeString TLadGraph::CompileCell(CellParam param)
 {
 	if(param.Param==COIL)
-		{
-		  return UnicodeString(MOV)+UnicodeString(param.Value);
-		}
-	if(param.Param==NC)
-		{
-		  return UnicodeString(NOT)+AnsiString(param.Value);
-		}
-	if(param.Param==NO)
-		{
-		  return UnicodeString(OT)+UnicodeString(param.Value);
-		}
-	if(param.Param==RE)
-		{
-		  return UnicodeString(RES)+UnicodeString(param.Value);
-		}
-	if(param.Param==SE)
-		{
-		  return UnicodeString(SET)+UnicodeString(param.Value);
-		}
-	if(param.Param==TOF)
-		{
-		  return UnicodeString(TmF)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
-		}
-	if(param.Param==TON)
-		{
-		  return UnicodeString(TmN)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
-		}
-return "";
+	  return UnicodeString(MOV)+UnicodeString(param.Value);
+	else if(param.Param==NC)
+	  return UnicodeString(NOT)+AnsiString(param.Value);
+	else if(param.Param==NO)
+	  return UnicodeString(OT)+UnicodeString(param.Value);
+	else if(param.Param==RE)
+	  return UnicodeString(RES)+UnicodeString(param.Value);
+	else if(param.Param==SE)
+	  return UnicodeString(SET)+UnicodeString(param.Value);
+	else if(param.Param==TOF)
+	  return UnicodeString(TmF)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
+	else if(param.Param==TON)
+	  return UnicodeString(TmN)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
+	else if(param.Param == CINC)
+		return UnicodeString(INCC)+UnicodeString(param.Value);
+	else if(param.Param == CDEC)
+		return UnicodeString(DECC)+UnicodeString(param.Value);
+	else if(param.Param == CRES)
+		return UnicodeString(RESC)+UnicodeString(param.Value) + UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
+	else
+		return "";
 }
 //---------------------------------------------------------------------------
 bool TLadGraph::isFBD(CellParam param)

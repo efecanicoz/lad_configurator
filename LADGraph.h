@@ -26,6 +26,9 @@
 #define TN				"T"
 #define TmF             "c"
 #define TmN             "t"
+#define INCC            "+"
+#define DECC            "-"
+#define RESC            "="
 //---------------------------------------------------------------------------
 #define COIL			"0"
 #define LINE			"1"
