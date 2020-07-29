@@ -46,10 +46,6 @@ object Form1: TForm1
     object IO: TTabSheet
       Caption = 'IO'
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 0
         Top = 0
@@ -10992,14 +10988,17 @@ object Form1: TForm1
     end
     object Action2: TAction
       Caption = 'Action2'
+      Enabled = False
       OnExecute = Action2Execute
     end
     object Action3: TAction
       Caption = 'Action3'
+      Enabled = False
       OnExecute = Action3Execute
     end
     object Action4: TAction
       Caption = 'Action4'
+      Enabled = False
       OnExecute = Action4Execute
     end
   end
