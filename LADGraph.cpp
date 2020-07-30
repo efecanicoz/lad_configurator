@@ -1379,6 +1379,9 @@ void TLadGraph::AddUp(TStringGrid *Grid, CellParam param)
 	else if(param.Param==COIL) Add_Coil(Grid, param.Value);
 	else if(param.Param==SE) Add_SET_Coil(Grid, param.Value);
 	else if(param.Param==RE) Add_RESET_Coil(Grid, param.Value);
+	else if(param.Param==CINC) Add_CINC(Grid, param.Value);
+	else if(param.Param==CDEC) Add_CDEC(Grid, param.Value);
+	else if(param.Param==CRES) Add_CRES(Grid, param.Value, param.Value2.ToInt());
 }
 //---------------------------------------------------------------------------
 void TLadGraph::AddDown(TStringGrid *Grid, CellParam param)
