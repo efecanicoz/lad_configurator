@@ -884,7 +884,6 @@ void TForm1::SaveProject(UnicodeString FileName)
 	stream->Write(&size,sizeof(uint16_t));
 	s->SaveToStream(stream);
 	s->Clear();
-	uint16_t frames=0;
 	//сохран€ем иксы
 	for(i = 0; i < frame2_count; i++)
 	{
@@ -896,7 +895,7 @@ void TForm1::SaveProject(UnicodeString FileName)
 	}
 	if(frame2_count != 0)
 	{
-		stream->Write(&frames,sizeof(uint16_t));
+		stream->Write(&frame2_count,sizeof(uint16_t));
 		s->SaveToStream(stream);
 		s->Clear();
 	}
@@ -911,18 +910,29 @@ void TForm1::SaveProject(UnicodeString FileName)
 	stream->Write(&size,sizeof(uint16_t));
 	s->SaveToStream(stream);
 	s->Clear();
+
 	//сохран€ем “аймеры
 	Timers->Strings->SaveToStream(s);
 	size = s->Size;
 	stream->Write(&size,sizeof(uint16_t));
 	s->SaveToStream(stream);
 	s->Clear();
+
 	//сохран€ем игрики
 	outputs->Strings->SaveToStream(s);
 	size = s->Size;
 	stream->Write(&size,sizeof(uint16_t));
 	s->SaveToStream(stream);
 	s->Clear();
+
+	//counters
+	counters->Strings->SaveToStream(s);
+	size = s->Size;
+	stream->Write(&size,sizeof(uint16_t));
+	s->SaveToStream(stream);
+	s->Clear();
+
+
 	//записываем ревизию
 	stream->Write(&ProgRevision,sizeof(uint8_t));
 	//сохран€ем основную программу
@@ -1002,6 +1012,7 @@ s->Seek(0,soFromBeginning);
 MVars->Strings->LoadFromStream(s);
 s->Clear();
 free(buf);
+
 //читаем “аймеры
 stream->Read(&len,sizeof(uint16_t));  //количество байтов в таймерах
 buf = (char*)calloc(sizeof(char), len+1);
@@ -1011,6 +1022,7 @@ s->Seek(0,soFromBeginning);
 Timers->Strings->LoadFromStream(s);
 s->Clear();
 free(buf);
+
 //читаем игрики
 stream->Read(&len,sizeof(uint16_t));  //количество байтов в игриках
 buf = (char*)calloc(sizeof(char), len+1);
@@ -1020,8 +1032,20 @@ s->Seek(0,soFromBeginning);
 outputs->Strings->LoadFromStream(s);
 s->Clear();
 free(buf);
+
+//timers
+stream->Read(&len,sizeof(uint16_t));  //количество байтов в игриках
+buf = (char*)calloc(sizeof(char), len+1);
+stream->Read(buf,len);
+s->Write(buf,len);
+s->Seek(0,soFromBeginning);
+counters->Strings->LoadFromStream(s);
+s->Clear();
+free(buf);
+
 //читаем ревизию
 stream->Read(&ProgRevision,sizeof(uint8_t));
+
 //читаем основную программу
 stream->Read(&len,sizeof(uint16_t));  //количество байтов в игриках
 buf = (char*)calloc(sizeof(char), len+1);
