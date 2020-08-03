@@ -1373,9 +1373,32 @@ void __fastcall TForm1::programmExecute(TObject *Sender)
 		s->Write(&size,sizeof(uint16_t));
 		s->Write(t.c_str(), size);
 	}
+
 	if(frame2_count > 0)
 	{
 		prog->Write(&frame2_count,sizeof(uint16_t));
+		s->SaveToStream(prog);
+		s->Clear();
+	}
+	else
+	{
+		prog->Write(&temp,sizeof(uint16_t));
+	}
+
+	//counters
+
+	for(i = 1; i <= MAXCVAR; i++)
+	{
+		t = AnsiString(counters->Cells[0][i]) + "|" + AnsiString(counters->Cells[1][i] + "|");
+		size = t.Length();
+		s->Write(&size,sizeof(uint16_t));
+		s->Write(t.c_str(), size);
+	}
+
+	temp = MAXCVAR;
+	if(frame2_count > 0)
+	{
+		prog->Write(&temp,sizeof(uint16_t));
 		s->SaveToStream(prog);
 		s->Clear();
 	}
