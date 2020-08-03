@@ -1389,7 +1389,16 @@ void __fastcall TForm1::programmExecute(TObject *Sender)
 
 	for(i = 1; i <= MAXCVAR; i++)
 	{
-		t = AnsiString(counters->Cells[0][i]) + "|" + AnsiString(counters->Cells[1][i] + "|");
+		t = AnsiString(counters->Cells[0][i]) + "|";
+		if(counters->Cells[1][i] != "")
+		{
+			t = t + AnsiString(counters->Cells[1][i]) + "|";
+		}
+		else
+		{
+            t = t + "0|";
+        }
+
 		size = t.Length();
 		s->Write(&size,sizeof(uint16_t));
 		s->Write(t.c_str(), size);
