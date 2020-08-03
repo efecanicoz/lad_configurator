@@ -124,7 +124,7 @@ void TFrame2::BuildCondition()
 	Variable->Caption = Var;
 	Condition_String = Input->Text+Condition->Text;
 
-	if(this->rg->ItemIndex==0)
+	if(this->rg->ItemIndex==0 && !(Input->Text.Pos("C")))
 		Condition_String=Condition_String+"%";
 
 	Condition_String=Condition_String+UnicodeString(value->Value);
