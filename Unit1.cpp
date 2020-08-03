@@ -128,7 +128,7 @@ bool TForm1::GetPrivileges()
 
 	 MyHash = ReadHashFromReg();
 
-	 if(MyHash=="") MyHash = GetPassHashString("1q2w3e4r");
+	 if(MyHash=="") MyHash = GetPassHashString("1a2s3d4f");
 	 YouHash = GetPassHashString(pass);
 	 if(MyHash==YouHash) return true;
 	}
