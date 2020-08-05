@@ -648,11 +648,25 @@ void TLadGraph::DrawCelll(TStringGrid *Grid ,CellParam * param, TRect Rect, int 
 
 	if(param->Param == CINC)
 	{
-		MyTextOut(Grid,GetCenterH(Rect)-w/2-MINUSX+2, GetCenterV(Rect)+0.5*h, "C INC");
+		UnicodeString temp_str;
+		if(param->Value2 != "0")
+		{
+			temp_str = "Period: " + param->Value2;
+			MyTextOut(Grid,GetCenterH(Rect)-Grid->Canvas->TextWidth(temp_str)/2, GetCenterV(Rect) - 0.5*h, temp_str );
+		}
+		temp_str = "C INC";
+		MyTextOut(Grid,GetCenterH(Rect)-Grid->Canvas->TextWidth(temp_str)/2, GetCenterV(Rect)+0.5*h, temp_str);
 	}
 	else if(param->Param == CDEC)
 	{
-		MyTextOut(Grid,GetCenterH(Rect)-w/2-MINUSX+2, GetCenterV(Rect)+0.5*h, "C DEC");
+		UnicodeString temp_str;
+		if(param->Value2 != "0")
+		{
+			temp_str = "Period: " + param->Value2;
+			MyTextOut(Grid,GetCenterH(Rect)-Grid->Canvas->TextWidth(temp_str)/2, GetCenterV(Rect) - 0.5*h, temp_str );
+		}
+		temp_str = "C DEC";
+		MyTextOut(Grid,GetCenterH(Rect)-Grid->Canvas->TextWidth(temp_str)/2, GetCenterV(Rect)+0.5*h, temp_str);
 	}
 	else if(param->Param == CRES)
 	{
@@ -917,22 +931,24 @@ bool TLadGraph::Add_CRES(TStringGrid *Grid, UnicodeString CounterName, int reset
 	param.Value2 = UnicodeString(reset_val);
 	return AddRelays(Grid, &param);
 }
-bool TLadGraph::Add_CINC(TStringGrid *Grid, UnicodeString CounterName)
+bool TLadGraph::Add_CINC(TStringGrid *Grid, UnicodeString CounterName, int period)
 {
 	if(Grid==NULL)
 		return false;
 	CellParam param;
 	param.Param = CINC;
 	param.Value = CounterName;
+	param.Value2 = period;
 	return AddRelays(Grid, &param);
 }
-bool TLadGraph::Add_CDEC(TStringGrid *Grid, UnicodeString CounterName)
+bool TLadGraph::Add_CDEC(TStringGrid *Grid, UnicodeString CounterName, int period)
 {
 	if(Grid==NULL)
 		return false;
 	CellParam param;
 	param.Param = CDEC;
 	param.Value = CounterName;
+	param.Value2 = period;
 	return AddRelays(Grid, &param);
 }
 //---------------------------------------------------------------------------
@@ -1119,9 +1135,9 @@ UnicodeString TLadGraph::CompileCell(CellParam param)
 	else if(param.Param==TON)
 	  return UnicodeString(TmN)+UnicodeString(param.Value)+UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
 	else if(param.Param == CINC)
-		return UnicodeString(INCC)+UnicodeString(param.Value);
+		return UnicodeString(INCC)+UnicodeString(param.Value) + UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
 	else if(param.Param == CDEC)
-		return UnicodeString(DECC)+UnicodeString(param.Value);
+		return UnicodeString(DECC)+UnicodeString(param.Value) + UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
 	else if(param.Param == CRES)
 		return UnicodeString(RESC)+UnicodeString(param.Value) + UnicodeString(DELIM)+UnicodeString(param.Value2)+UnicodeString(DELIM);
 	else
@@ -1341,15 +1357,23 @@ CellParam TLadGraph::DeCompileCell(UnicodeString &s)
   else if(UnicodeString(s.operator [](1))==UnicodeString(INCC))
   {
 		Data.Param=CINC;
-		Data.Value=s.SubString(2,3);
-		s=s.SubString(5,s.Length());
+		int pos = s.Pos(UnicodeString(DELIM));
+		Data.Value=s.SubString(2,pos-2);
+		s=s.SubString(pos+1,s.Length());
+		pos = s.Pos(UnicodeString(DELIM));
+		Data.Value2=s.SubString(1,pos-1);
+		s=s.SubString(pos+1,s.Length());
 		return Data;
   }
   else if(UnicodeString(s.operator [](1))==UnicodeString(DECC))
   {
 		Data.Param=CDEC;
-		Data.Value=s.SubString(2,3);
-		s=s.SubString(5,s.Length());
+		int pos = s.Pos(UnicodeString(DELIM));
+		Data.Value=s.SubString(2,pos-2);
+		s=s.SubString(pos+1,s.Length());
+		pos = s.Pos(UnicodeString(DELIM));
+		Data.Value2=s.SubString(1,pos-1);
+		s=s.SubString(pos+1,s.Length());
 		return Data;
   }
   else if(UnicodeString(s.operator [](1))==UnicodeString(RESC))
@@ -1382,8 +1406,8 @@ void TLadGraph::AddUp(TStringGrid *Grid, CellParam param)
 	else if(param.Param==COIL) Add_Coil(Grid, param.Value);
 	else if(param.Param==SE) Add_SET_Coil(Grid, param.Value);
 	else if(param.Param==RE) Add_RESET_Coil(Grid, param.Value);
-	else if(param.Param==CINC) Add_CINC(Grid, param.Value);
-	else if(param.Param==CDEC) Add_CDEC(Grid, param.Value);
+	else if(param.Param==CINC) Add_CINC(Grid, param.Value, param.Value2.ToInt());
+	else if(param.Param==CDEC) Add_CDEC(Grid, param.Value, param.Value2.ToInt());
 	else if(param.Param==CRES) Add_CRES(Grid, param.Value, param.Value2.ToInt());
 }
 //---------------------------------------------------------------------------

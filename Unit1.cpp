@@ -1752,18 +1752,20 @@ void __fastcall TForm1::Action2Execute(TObject *Sender)
 	frm = new TForm9(this);
 	frm->label_reset->Visible = false;
 	frm->input_reset->Visible = false;
+	frm->label_reset->Caption = "Period(ms) :";
+
 
 	frm->counterDDL->Clear();
 	for(i = 1; i <= MAXCVAR; i++)
 	{
 		frm->counterDDL->AddItem(counters->Cells[0][i], NULL);
 	}
-    frm->Caption = frm->Caption + "increment";
+	frm->Caption = frm->Caption + "increment";
 	frm->ShowModal();
 
 	if("" != frm->result)
 	{
-		LadGraph->Add_CINC(LadGraph->GetCurrentGrid(),frm->result);
+		LadGraph->Add_CINC(LadGraph->GetCurrentGrid(),frm->result, frm->reset_val);
 		SetModified(true);
 	}
 
@@ -1780,7 +1782,7 @@ void __fastcall TForm1::Action2Execute(TObject *Sender)
 void __fastcall TForm1::Action3Execute(TObject *Sender)
 {
 	//decrement     c
-        TForm9 * frm;
+		TForm9 * frm;
 	int i;
 
 	if(LadGraph->GetCurrentGrid()==NULL)
@@ -1789,6 +1791,7 @@ void __fastcall TForm1::Action3Execute(TObject *Sender)
 	frm = new TForm9(this);
 	frm->label_reset->Visible = false;
 	frm->input_reset->Visible = false;
+	frm->label_reset->Caption = "Period(ms) :";
 
 	frm->counterDDL->Clear();
 	for(i = 1; i <= MAXCVAR; i++)
@@ -1800,7 +1803,7 @@ void __fastcall TForm1::Action3Execute(TObject *Sender)
 
 	if("" != frm->result)
 	{
-		LadGraph->Add_CDEC(LadGraph->GetCurrentGrid(),frm->result);
+		LadGraph->Add_CDEC(LadGraph->GetCurrentGrid(),frm->result, frm->reset_val);
 		SetModified(true);
 	}
 }
@@ -1809,13 +1812,14 @@ void __fastcall TForm1::Action3Execute(TObject *Sender)
 void __fastcall TForm1::Action4Execute(TObject *Sender)
 {
 	//reset
-        TForm9 * frm;
+		TForm9 * frm;
 	int i;
 
 	if(LadGraph->GetCurrentGrid()==NULL)
 		return;
 
 	frm = new TForm9(this);
+	frm->chkWithTimer->Visible = false;
 
 	frm->counterDDL->Clear();
 	for(i = 1; i <= MAXCVAR; i++)

@@ -18,8 +18,10 @@ __published:	// IDE-managed Components
 	TCSpinEdit *input_reset;
 	TButton *Button1;
 	TButton *Button2;
+	TCheckBox *chkWithTimer;
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall Button2Click(TObject *Sender);
+	void __fastcall chkWithTimerClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TForm9(TComponent* Owner);

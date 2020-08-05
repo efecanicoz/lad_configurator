@@ -3,7 +3,7 @@ object Form9: TForm9
   Top = 0
   Caption = 'Counter '
   ClientHeight = 107
-  ClientWidth = 316
+  ClientWidth = 372
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -60,5 +60,14 @@ object Form9: TForm9
     Caption = 'Cancel'
     TabOrder = 3
     OnClick = Button2Click
+  end
+  object chkWithTimer: TCheckBox
+    Left = 267
+    Top = 18
+    Width = 97
+    Height = 17
+    Caption = 'With Timer'
+    TabOrder = 4
+    OnClick = chkWithTimerClick
   end
 end

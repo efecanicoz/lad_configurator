@@ -151,8 +151,8 @@ public:
 	bool CellIsTimer(TStringGrid *Grid, int Arow, int Acol, int &TimerIndex);
 	void TLadGraph::UpdateConditionNames(int upper_limit);
 	bool TLadGraph::Add_CRES(TStringGrid *Grid, UnicodeString CounterName, int reset_val);
-	bool TLadGraph::Add_CINC(TStringGrid *Grid, UnicodeString CounterName);
-	bool TLadGraph::Add_CDEC(TStringGrid *Grid, UnicodeString CounterName);
+	bool TLadGraph::Add_CINC(TStringGrid *Grid, UnicodeString CounterName, int period);
+	bool TLadGraph::Add_CDEC(TStringGrid *Grid, UnicodeString CounterName, int period);
 };
 
 

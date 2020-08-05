@@ -32,3 +32,16 @@ void __fastcall TForm9::Button2Click(TObject *Sender)
 	this->Close();
 }
 //---------------------------------------------------------------------------
+void __fastcall TForm9::chkWithTimerClick(TObject *Sender)
+{
+	label_reset->Visible = chkWithTimer->Checked;
+	input_reset->Visible = chkWithTimer->Checked;
+
+	if(false == chkWithTimer->Checked)
+	{
+        this->input_reset->Text = "0";
+    }
+
+}
+//---------------------------------------------------------------------------
+
