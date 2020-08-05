@@ -656,7 +656,10 @@ void TLadGraph::DrawCelll(TStringGrid *Grid ,CellParam * param, TRect Rect, int 
 	}
 	else if(param->Param == CRES)
 	{
-		MyTextOut(Grid,GetCenterH(Rect)-w/2-MINUSX+2, GetCenterV(Rect)+0.5*h, "C RESET");
+		UnicodeString temp_str = "Value: " + param->Value2;
+		MyTextOut(Grid,GetCenterH(Rect)-Grid->Canvas->TextWidth(temp_str)/2, GetCenterV(Rect) - 0.5*h, temp_str );
+		temp_str = "C RESET";
+		MyTextOut(Grid,GetCenterH(Rect)-Grid->Canvas->TextWidth(temp_str)/2, GetCenterV(Rect)+0.5*h, temp_str);
 	}
 
 	if(param->Param!=TOF && param->Param!=TON)
