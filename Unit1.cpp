@@ -1565,9 +1565,8 @@ return false;
 	}
 bool isFinded=false;
 AnsiString Answer, Msg;
-for(int i=0; i<ports->Count; i++)
+for(int i=1; i<ports->Count; i++)
 {
-    i++;
 	if(port->OpenPort(ports->operator [](i),CBR_115200,8,NOPARITY,ONESTOPBIT,1000))
 	{
 	  Msg = "V";
